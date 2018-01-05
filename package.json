@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
+    "ng": "ng",    
+    "start": "concurrently \"ng serve\" \"node nodeServer.js\"",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -23,9 +23,12 @@
     "@angular/router": "^5.0.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.2",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
   },
   "devDependencies": {
+    "concurrently": "^3.2.0",
     "@angular/cli": "1.5.4",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/language-service": "^5.0.0",
