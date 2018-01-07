@@ -69,19 +69,19 @@
         <th>Price</th>
         <th>Date</th>
         <th>Exchange</th>
-        <th>Action</th>
+        <!-- <th>Action</th> -->
       </tr>
       <tr *ngFor="let trade of tradeHistory">
-        <td><span>{{ trade.coinId }}</span></td>
-        <td><span>{{ trade.qty }}</span></td>
-        <td><span>{{ trade.price }}</span></td>
-        <td><span>{{ trade.date }}</span></td>
-        <td><span>{{ trade.exchange }}</span></td>
-        <td>
+        <td>{{ trade.coinId }}</td>
+        <td>{{ trade.qty.toFixed(4) }}</td>
+        <td>{{ trade.price.toFixed(8) }}</td>
+        <td>{{ trade.date }}</td>
+        <td>{{ trade.exchange }}</td>
+        <!-- <td>
           <a role="button" (click)="deleteTradeHistory($index)">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
-        </td>
+        </td> -->
       </tr>
     </table>
 

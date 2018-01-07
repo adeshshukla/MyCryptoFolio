@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "ng",    
+    "ng": "ng",
     "start": "concurrently \"ng serve\" \"node nodeServer.js\"",
     "build": "ng build",
     "test": "ng test",
@@ -21,11 +21,11 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "body-parser": "^1.17.2",    
     "core-js": "^2.4.1",
+    "express": "^4.15.3",
     "rxjs": "^5.5.2",
-    "zone.js": "^0.8.14",
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3"
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "concurrently": "^3.2.0",

@@ -1,1 +1,0 @@
-[{"pairId":"XRPBTC","coinId":"XRP","qty":100,"price":0.000052,"date":"02-01-2018","exchange":"BIN"},{"pairId":"ETHBTC","coinId":"ETH","qty":0.05,"price":0.1256,"date":"02-01-2018","exchange":"BIN"},{"coinId":"TRX","qty":1000,"price":1400,"date":"2018-01-06","exchange":"BIN"}]

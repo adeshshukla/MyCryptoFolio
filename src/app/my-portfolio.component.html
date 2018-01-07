@@ -1,2 +1,53 @@
+<h1 class="page-header">{{pageTitle}}</h1>
 
-        <h1 class="page-header"> My Portfolio</h1>
+<form name="frmPortfolio" class="form-horizontal col-sm-12" novalidate>
+        <div class="row form-group">
+                <div class="col-sm-2">
+                        <button type="button" class="btn btn-success btn-block" (click)="refresh()">
+                                <span class="glyphicon glyphicon-refresh"></span> Refresh
+                        </button>
+                </div>
+                <span class="help-block">* Currently the data is refreshed from Binance Exchange only.</span>
+        </div>
+
+
+
+        <!-- Table-->
+        <div class="col-md-12 form-group">
+                <table class="table">
+                        <tr>
+                                <th>Coin</th>
+                                <th>Buy Price</th>
+                                <th>Buy BTC Value</th>
+                                <th>Quantity</th>
+                                <th>Current Price</th>
+                                <th>Current BTC Value</th>
+                                <th>Profit</th>
+                                <th>%</th>
+                        </tr>
+                        <tr *ngFor="let item of portfolio">
+                                <td>{{ item.coinId }}</td>
+                                <td>{{ item.buyPrice.toFixed(8) }}</td>
+                                <td>{{ item.buyBtcValue.toFixed(8) }}</td>
+                                <td>{{ item.qty.toFixed(4) }}</td>
+                                <td>{{ item.currentPrice.toFixed(8) }}</td>
+                                <td>{{ item.currentBtcValue.toFixed(8) }}</td>
+                                <td>{{ item.profit.toFixed(8) }}</td>
+                                <td>{{ item.profitPerc.toFixed(2) }}</td>
+                        </tr>
+                        <tr></tr>
+                        <tr *ngIf="portfolio.length > 0" style="background-color: lightgrey;">
+                                <td>Total</td>
+                                <td></td>
+                                <td>{{ totalRow.buyBtcValue.toFixed(8) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ totalRow.currentBtcValue.toFixed(8) }}</td>
+                                <td>{{ totalRow.profit.toFixed(8) }}</td>
+                                <td>{{ totalRow.profitPerc.toFixed(2) }}</td>
+                        </tr>
+                </table>
+
+        </div>
+
+</form>

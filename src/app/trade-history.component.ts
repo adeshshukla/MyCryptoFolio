@@ -18,15 +18,14 @@ export class TradeHistoryComponent {
     price;
     date;
     exchange;
-    tradeHistory;
+    tradeHistory = [];
 
 
     availableExchanges = [{ id: 'BIN', name: 'Binance' }, { id: 'POLO', name: 'Poloniex' }];
     selectedExchange = "BIN";
 
     constructor(private tradeHistoryService: TradeHistoryService) {
-        // console.log(mode);
-        // console.log(id);
+        // Get Trade history
         this.getTradeHistory();
     }
 
@@ -51,12 +50,18 @@ export class TradeHistoryComponent {
 
     getTradeHistory(): void {
         this.tradeHistoryService.getTradeHistory()
-            .subscribe(data => this.tradeHistory = data,
-            err => this.errorMessage = <any>err);
+            .subscribe(data => {
+                this.tradeHistory = data
+            },
+            err => {
+                this.errorMessage = <any>err;
+                console.log(err);
+            });
     }
 
     addTrade(): void {
         var trade = {
+            pairId: this.coinId + "BTC",
             coinId: this.coinId,
             qty: this.qty,
             price: this.price,
@@ -68,13 +73,13 @@ export class TradeHistoryComponent {
         this.tradeHistory.push(trade);
     }
 
-    submit(): void{
+    submit(): void {
         this.tradeHistoryService.saveTradeHistory(this.tradeHistory)
             .subscribe(data => {
-                console.log('---------------After saving in Trade history component')
+                console.log('Data saved successfully...!!!')
                 console.log(data);
             },
-            err => this.errorMessage = <any>err);        
+            err => this.errorMessage = <any>err);
     }
 
 }

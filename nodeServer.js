@@ -3,6 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
 var fs = require("fs");
+const https = require("https");
 
 // Body Parser Middleware
 app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
@@ -21,18 +22,16 @@ app.use(function (req, res, next) {
 
 //             ------------------------------ Read text file ------------------------------------------------------
 app.get("/api/trade/getTradeHistory", function (req, res) {
-	console.log('inside api service method : getTradeHistory() ');
 	fs.readFile('./db/tradeHistory.txt', 'utf8', function (err, contents) {
 		if (err) {
-			console.log("ERROR reading tradeHistory.txt file!!!");
-			console.log(err);
+			// console.log(err);
 			res.send(err);
 		}
 		else {
-			// console.log(contents);
-			var jsonObj = JSON.parse(contents);
-			// console.log('--------- JSON Content from TXT file ---------');
-			// console.log(jsonObj);			
+			var jsonObj = [];
+			if (contents) {
+				jsonObj = JSON.parse(contents);
+			}
 
 			// send data to front end
 			res.send(jsonObj);
@@ -41,8 +40,6 @@ app.get("/api/trade/getTradeHistory", function (req, res) {
 });
 
 app.post("/api/trade/saveTradeHistory", function (req, res) {
-	console.log("---------Posted data ----------------")
-	console.log(req.body)
 	var data = JSON.stringify(req.body);
 	fs.writeFile('./db/tradeHistory.txt', data, function (err) {
 		if (err) {
@@ -52,6 +49,29 @@ app.post("/api/trade/saveTradeHistory", function (req, res) {
 	});
 });
 
+app.get("/api/binance/getCurrentPriceAllSymbols", function (req, res) {
+
+	const binanceApiUrl = 'https://api.binance.com';
+	var url = binanceApiUrl + "/api/v3/ticker/price";
+
+	https.get(url, response => {
+
+		response.setEncoding("utf8");
+		let body = "";
+		response.on("data", data => {
+			body += data;
+		});
+		response.on("end", () => {
+			body = JSON.parse(body);
+			res.send(body);
+		});
+
+
+	}).on('error', err => {
+		console.log('---- Network connection issue --------');
+		res.send({ "errCode": "NET_ERR" });
+	});
+});
 
 //Setting up server
 

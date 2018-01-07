@@ -1,17 +1,14 @@
 import { Component } from "@angular/core";
 
 @Component({
-    selector : 'dashboard',
-    templateUrl : './dashboard.component.html'
+    selector: 'dashboard',
+    templateUrl: './dashboard.component.html'
 })
 
-export class DashboardComponent{
-    constructor(){
-    // console.log(mode);
-    // console.log(id);
+export class DashboardComponent {
+    constructor() {
     }
 
-    isViewMode = true;
     pageTitle = 'Dashboard';
 }
 

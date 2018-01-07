@@ -16,35 +16,20 @@ export class TradeHistoryService {
 
   getTradeHistory(): Observable<Trade[]> {
     var url = this.tradeApiUrl + '/getTradeHistory';
-    var data = this.http.get(url).map(this.extractData).catch(this.handleError);
-    console.log('----------------getTradeHistory in Trade history service')
-    console.log(data);
-    return data;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
   saveTradeHistory(tradeHistory: Trade[]): Observable<Trade[]> {
     var url = this.tradeApiUrl + '/saveTradeHistory';
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-
-    console.log('----------------Before Saving in Trade history service')
-    console.log(tradeHistory);
-    var data = this.http.post(url, tradeHistory, options)
-                        .map(this.extractData).catch(this.handleError);
-
-    console.log('----------------After Saving in Trade history service')
-    console.log(data);
-    return data;
+    return this.http.post(url, tradeHistory, options).map(this.extractData).catch(this.handleError);
   }
-
-  // getEmployeeByName(name:string):Observable<Employee[]>{
-  //   var url = this.employeeUrl + '/getAllEmployeeByName/' + name;
-  //   // console.log('inside employee service - getEmployeeByName()');
-  //   return this.http.get(url).map(this.extractData).catch(this.handleError);
-  // }
 
   private extractData(res: Response) {
     let body = res.json();
+    // console.log('----------------extractData in Trade history service')
+    // console.log(body);
     return body || [];
   }
 
@@ -58,7 +43,8 @@ export class TradeHistoryService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    console.error(errMsg);
+    // console.error('------------------- Inside tradeHistoryService.handleError() ------------------------')
+    // console.error(errMsg);
     return Observable.throw(errMsg);
   }
 }
