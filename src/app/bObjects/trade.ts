@@ -1,6 +1,7 @@
 export class Trade {
     pairId: string;
     coinId: string;
+    tradeType: string;
     qty: number;
     price: number;
     date: string;

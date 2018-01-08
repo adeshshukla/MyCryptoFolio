@@ -1,6 +1,7 @@
-<h1 class="page-header">{{pageTitle}}</h1>
+
 
 <form name="frmPortfolio" class="form-horizontal col-sm-12" novalidate>
+        <h1 class="page-header">{{pageTitle}}</h1>
         <div class="row form-group">
                 <div class="col-sm-2">
                         <button type="button" class="btn btn-success btn-block" (click)="refresh()">
@@ -32,19 +33,19 @@
                                 <td>{{ item.qty.toFixed(4) }}</td>
                                 <td>{{ item.currentPrice.toFixed(8) }}</td>
                                 <td>{{ item.currentBtcValue.toFixed(8) }}</td>
-                                <td>{{ item.profit.toFixed(8) }}</td>
-                                <td>{{ item.profitPerc.toFixed(2) }}</td>
+                                <td [className]="item.profit < 0? 'lossText':'profitText'">{{ item.profit.toFixed(8) }}</td>
+                                <td [className]="item.profitPerc < 0? 'lossText':'profitText'">{{ item.profitPerc.toFixed(2) }}</td>
                         </tr>
                         <tr></tr>
-                        <tr *ngIf="portfolio.length > 0" style="background-color: lightgrey;">
+                        <tr *ngIf="portfolio.length > 0" style="background-color: grey; ">
                                 <td>Total</td>
                                 <td></td>
                                 <td>{{ totalRow.buyBtcValue.toFixed(8) }}</td>
                                 <td></td>
                                 <td></td>
                                 <td>{{ totalRow.currentBtcValue.toFixed(8) }}</td>
-                                <td>{{ totalRow.profit.toFixed(8) }}</td>
-                                <td>{{ totalRow.profitPerc.toFixed(2) }}</td>
+                                <td [className]="totalRow.profit < 0? 'lossText':'profitText'">{{ totalRow.profit.toFixed(8) }}</td>
+                                <td [className]="totalRow.profitPerc < 0? 'lossText':'profitText'">{{ totalRow.profitPerc.toFixed(2) }}</td>
                         </tr>
                 </table>
 

@@ -42,22 +42,26 @@ export class MyPortfolioComponent {
                     alert("Please enter some data in trade history page...!!!");
                 } else {
                     that.tradeHistory.forEach(function (trade) {
-                        portfolioItem = new Portfolio();
-                        portfolioItem.pairId = trade.pairId;
-                        portfolioItem.coinId = trade.coinId;
-                        portfolioItem.qty = trade.qty;
-                        portfolioItem.buyPrice = trade.price;
-                        portfolioItem.buyBtcValue = trade.price * trade.qty;
+                        if (trade.tradeType === "Buy") {
+                            portfolioItem = new Portfolio();
+                            portfolioItem.pairId = trade.pairId;
+                            portfolioItem.coinId = trade.coinId;
+                            portfolioItem.qty = trade.qty;
+                            portfolioItem.buyPrice = trade.price;
+                            portfolioItem.buyBtcValue = trade.price * trade.qty;
 
-                        // initialize current price with buying price
-                        currentPrice = trade.price;
-                        portfolioItem.currentPrice = currentPrice;
-                        portfolioItem.currentBtcValue = currentPrice * trade.qty;
-                        portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
-                        portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+                            // initialize current price with buying price
+                            currentPrice = trade.price;
+                            portfolioItem.currentPrice = currentPrice;
+                            portfolioItem.currentBtcValue = currentPrice * trade.qty;
+                            portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+                            portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
 
-                        that.portfolio.push(portfolioItem);
+                            that.portfolio.push(portfolioItem);
+                        }
                     });
+
+                    // Sort by date desc : that.portfolio.sort();
 
                     // Refresh data from Binance.
                     that.refresh();

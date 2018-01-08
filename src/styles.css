@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+.lossText{
+    color: red; 
+}
+
+.profitText{
+    color:#14d014;
+}
+
+.loss{
+    color: white; 
+    background-color:red;
+}
+
+.profit{
+    color: white;
+    background-color: #14d014;
+}
+
+/*Table css*/
+/*tr:nth-child(even) {background-color: #f2f2f2;}*/
+tr:nth-child(even) {background-color: #eaf5ff;}
+/*tr:hover {background-color:lightblue}*/
+
+td{
+    height: 5px !important;
+}

@@ -1,6 +1,6 @@
-<h1 class="page-header"> {{pageTitle}}</h1>
-
 <form name="my_form" class="form-horizontal col-sm-12" novalidate>
+  <h1 class="page-header"> {{pageTitle}}</h1>
+  
   <div class="row form-group">
     <label class="control-label col-sm-2" for="txtCoin">Coin</label>
     <div class="col-sm-3">
@@ -28,9 +28,9 @@
   <div class="row form-group">
     <label class="control-label col-sm-2" for="ddlType">Trade type</label>
     <div class="col-sm-3">
-      <select class="form-control" id="ddlType" name="Trade type" [disabled]="true">
-          <option value="buy">Buy</option>        
-          <option value="sell">Sell</option>        
+      <select class="form-control" id="ddlType" name="Trade type" [(ngModel)]="tradeType">
+          <option value="Buy">Buy</option>        
+          <option value="Sell">Sell</option>        
       </select>
     </div>
 
@@ -65,23 +65,25 @@
     <table class="table">
       <tr>
         <th>Coin</th>
+        <th>Type</th>
         <th>Qty</th>
         <th>Price</th>
         <th>Date</th>
         <th>Exchange</th>
-        <!-- <th>Action</th> -->
+        <th></th>
       </tr>
-      <tr *ngFor="let trade of tradeHistory">
+      <tr *ngFor="let trade of tradeHistory; let i = index">
         <td>{{ trade.coinId }}</td>
+        <td [style.color]="trade.tradeType == 'Buy' ? 'green':'red' ">{{ trade.tradeType }}</td>
         <td>{{ trade.qty.toFixed(4) }}</td>
         <td>{{ trade.price.toFixed(8) }}</td>
         <td>{{ trade.date }}</td>
         <td>{{ trade.exchange }}</td>
-        <!-- <td>
-          <a role="button" (click)="deleteTradeHistory($index)">
+         <td>
+          <a role="button" (click)="deleteTradeHistory(i)">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
-        </td> -->
+        </td> 
       </tr>
     </table>
 

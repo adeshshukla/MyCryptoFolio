@@ -10,15 +10,17 @@ import { TradeHistoryService } from "./services/tradeHistoryService.service";
 
 export class TradeHistoryComponent {
 
-    pageTitle = 'Trade History';
-    errorMessage: any;
+    private pageTitle = 'Trade History';
+    private errorMessage: any;
 
-    coinId;
-    qty;
-    price;
-    date;
-    exchange;
-    tradeHistory = [];
+    private coinId;
+    private qty;
+    private price;
+    private date;
+    private exchange;
+    private tradeType;
+
+    private tradeHistory = [];
 
 
     availableExchanges = [{ id: 'BIN', name: 'Binance' }, { id: 'POLO', name: 'Poloniex' }];
@@ -63,6 +65,7 @@ export class TradeHistoryComponent {
         var trade = {
             pairId: this.coinId + "BTC",
             coinId: this.coinId,
+            tradeType: this.tradeType,
             qty: this.qty,
             price: this.price,
             date: this.date,
@@ -71,6 +74,21 @@ export class TradeHistoryComponent {
 
 
         this.tradeHistory.push(trade);
+    }
+
+    deleteTradeHistory(index): void{
+        //console.log(index)
+        this.tradeHistory.splice(index,1);
+        console.log(this.tradeHistory)        
+    }
+
+    resetForm(): void {
+        this.coinId = '';
+        this.qty = '';
+        this.price = '';
+        this.date = '';
+        this.exchange = '';
+        this.tradeType = '';
     }
 
     submit(): void {
