@@ -1,27 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background:#f4f4f4;;
+}
+
+.navbar{
+    color:#555555;
+    background-color: #555555;
+}
+
+.page-header{    
+    /*background-color:#eaac53;
+    color: white;
+    padding: 5px 15px   ;*/
+    border-bottom: 2px solid #eaac53 ;
+}
 .lossText{
-    color: red; 
+    /*color: red; */
+    color: #bb1818;
 }
 
 .profitText{
-    color:#14d014;
+    /*color:#14d014;*/
+    color: #397939;
 }
 
 .loss{
     color: white; 
-    background-color:red;
+    background-color:#bb1818;
 }
 
 .profit{
     color: white;
-    background-color: #14d014;
+    background-color: #397939;
 }
 
 /*Table css*/
 /*tr:nth-child(even) {background-color: #f2f2f2;}*/
-tr:nth-child(even) {background-color: #eaf5ff;}
+tr:nth-child(even) {background-color: #e6e6e6}
 /*tr:hover {background-color:lightblue}*/
 
 td{
     height: 5px !important;
+}
+
+/*Accordion*/
+.accordion, .accordion a{    
+    background-color:#eaac53;
+    /*background-color: #f97849;*/
+    /*background-color:maroon;*/
+    color: white;
+    font-size: 1.4em;    
+    text-decoration: none;    
+}
+
+.glyphicon-trash{
+    color:#f10c0c;
+}
+
+.totalRowGreen{
+    /*background-color:#99c38e !important;*/
+    color: white ;
+    background-color: grey !important;
+}
+
+.navbar-brand{
+    color: white !important;
+    font-size:22px !important;
+}
+
+.navbar-brand:hover{
+    font-size:25px !important;
+    color: white !important;
 }

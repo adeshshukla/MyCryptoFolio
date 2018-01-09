@@ -7,7 +7,7 @@
       <input type="text" class="form-control" id="txtCoin" name="txtCoin" placeholder="Coin Name" [(ngModel)]="coinId">
     </div>
 
-    <label class="control-label col-sm-2" for="txtQty">Quantity</label>
+    <label class="col-sm-offset-1 control-label col-sm-2" for="txtQty">Quantity</label>
     <div class="col-sm-3">
       <input type="number" class="form-control" id="txtQty" name="txtQty" placeholder="Quantity" [(ngModel)]="qty">
     </div>
@@ -19,7 +19,7 @@
       <input type="number" class="form-control" id="txtPrice" name="txtPrice" placeholder="Price" [(ngModel)]="price">
     </div>
 
-    <label class="control-label col-sm-2" for="txtDate">Date</label>
+    <label class="col-sm-offset-1 control-label col-sm-2" for="txtDate">Date</label>
     <div class="col-sm-3">
       <input type="date" class="form-control" id="txtDate" name="Date" placeholder="Date" [(ngModel)]="date">
     </div>
@@ -34,7 +34,7 @@
       </select>
     </div>
 
-    <label class="control-label col-sm-2" for="ddlExchange">Exchange</label>
+    <label class="col-sm-offset-1 control-label col-sm-2" for="ddlExchange">Exchange</label>
     <div class="col-sm-3">
       <!--<select class="form-control" name="Exchange" ng-model="selectedExchange" ng-options="x.name for x in availableExchanges"></select>-->
       <select class="form-control" name="Exchange" [disabled]="true" [(ngModel)]="selectedExchange">
@@ -47,12 +47,12 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-sm-offset-6 col-sm-2">
+    <div class="col-sm-offset-8 col-sm-1" style="width:12%">
       <button type="button" class="btn btn-danger btn-block" (click)="resetForm()" ng-disabled="!my_form.$dirty">
                     <span class="glyphicon glyphicon-refresh"></span> Reset
                   </button>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2" style="width:12%">
       <!--<input type="button" class="btn btn-primary btn-block" ng-click="addChefTask(my_form)" ng-disabled="my_form.$invalid" value="Add Task" />                -->
       <button type="button" class="btn btn-primary btn-block" (click)="addTrade()" ng-disabled="my_form.$invalid">
                   <span class="glyphicon glyphicon-plus"></span> Add Trade
@@ -89,8 +89,8 @@
 
   </div>
 
-  <div class="form-group">
-    <div class="col-sm-offset-7 col-sm-2">
+  <div class="row form-group" style="padding-right:40px;">
+    <div class="col-sm-offset-10 col-sm-2" style="width:12%; float:right;">
       <button type="button" class="btn btn-success btn-block" (click)="submit()">
                 <span class="glyphicon glyphicon-floppy-save"></span> Submit
               </button>

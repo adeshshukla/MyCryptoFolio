@@ -31,6 +31,7 @@ h1 {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
   border-right: 1px solid #eee;
+  background-color:  #555555;
 }
 
 .sidebar .nav {
@@ -64,6 +65,13 @@ h1 {
 }
 
 .nav-sidebar > .active > a, .nav-sidebar > .active > a:hover, .nav-sidebar > .active > a:focus {
-    color: #fff;
-    background-color: #428bca;
+    /*color: #fff;*/
+    color:white;
+    /*background-color: #428bca;*/
+    /*background-color: #f97849;*/
+    background-color:#eaac53;
+}
+
+a{
+  color:white;
 }
