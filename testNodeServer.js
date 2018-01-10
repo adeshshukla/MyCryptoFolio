@@ -3,6 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
 var fs = require("fs");
+const https = require("https");
 
 // Body Parser Middleware
 app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
@@ -19,35 +20,21 @@ app.use(function (req, res, next) {
 	next();
 });
 
+xlsx = require('xlsx');
+var file = xlsx.readFile('./uploads/TradeHistory.xlsx');
+//console.log(file);
 
-const https = require("https");
+function to_json(workbook) {
+    var result = {};
+    workbook.SheetNames.forEach(function(sheetName) {
+        var roa = xlsx.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+        if(roa.length > 0){
+            result[sheetName] = roa;
+        }
+    });
+    //return result;
+	console.log('// Json result')
+	console.log(result);
+}
 
-const binanceApiUrl = 'https://api.binance.com';
-
-	var url = binanceApiUrl + "/api/v3/ticker/price";
-
-	console.log('----------------inside /api/binance/getCurrentPriceAllSymbols')
-	https.get(url, response => {
-		console.log('--------response----------')
-		console.log( '  ' + response.statusCode)
-		// response.on("error", err1=>{
-		// 	console.log('--------network error-------')
-		// 	console.log(err1);
-		// });
-
-		response.setEncoding("utf8");
-		let body = "";
-		response.on("data", data => {
-			body += data;
-		});
-		response.on("end", () => {
-			body = JSON.parse(body);
-      console.log('--------respnse end')
-      console.log('  '+response.statusCode)
-		});
-
-		
-	}).on('error', function(err){
-    console.log('-----------in err handlres')
-    console.log(err)
-  });
+to_json(file);

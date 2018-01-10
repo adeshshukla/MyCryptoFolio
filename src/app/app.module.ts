@@ -23,7 +23,7 @@ import { BinanceService } from "./services/binanceService.service";
       { path: 'dashboard', component: DashboardComponent },
       { path: 'myPortfolio', component: MyPortfolioComponent },
       { path: 'tradeHistory', component: TradeHistoryComponent },
-      // { path:'employeeDetail/:mode/:id', component:EmployeeDetailComponent}
+      // { path:'employeeDetail/:mode/:id', component:EmployeeDetailComponent}      
       { path: '', redirectTo: '/myPortfolio', pathMatch: 'full' }
     ])
   ],

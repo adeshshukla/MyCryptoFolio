@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 
 import { Trade } from "../bObjects/trade";
 
+
 @Injectable()
 export class TradeHistoryService {
   private tradeApiUrl = 'http://localhost:8080/api/trade';
@@ -16,7 +17,25 @@ export class TradeHistoryService {
 
   getTradeHistory(): Observable<Trade[]> {
     var url = this.tradeApiUrl + '/getTradeHistory';
-    return this.http.get(url).map(this.extractData).catch(this.handleError);
+    return this.http.get(url).map(this.createTradeHistory).catch(this.handleError);
+  }
+
+  createTradeHistory(res: Response) {
+    let data = res.json();
+    var tradeHistory: Trade[] = [];
+    data.forEach(element => {
+      var trade: Trade = {
+        pairId: element.Market,
+        coinId: element.Market.substring(0, element.Market.length - 3),
+        tradeType: element.Type,
+        qty: element.Amount,
+        price: element.Price,
+        date: element.Date,
+        exchange: "BIN"
+      }
+      tradeHistory.push(trade);
+    });
+    return tradeHistory;
   }
 
   saveTradeHistory(tradeHistory: Trade[]): Observable<Trade[]> {
@@ -28,8 +47,6 @@ export class TradeHistoryService {
 
   private extractData(res: Response) {
     let body = res.json();
-    // console.log('----------------extractData in Trade history service')
-    // console.log(body);
     return body || [];
   }
 

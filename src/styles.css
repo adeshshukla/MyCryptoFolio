@@ -72,3 +72,22 @@ td{
     font-size:25px !important;
     color: white !important;
 }
+
+.upload-input {
+  display: none !important;
+}
+
+.upload-btn {
+  color: #ffffff;
+  background-color: #F89406;
+  border: none;
+}
+
+.upload-btn:hover,
+.upload-btn:focus,
+.upload-btn:active,
+.upload-btn.active {
+  color: #ffffff;
+  background-color: #FA8900;
+  border: none;
+}

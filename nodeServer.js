@@ -45,7 +45,7 @@ app.post("/api/trade/saveTradeHistory", function (req, res) {
 		if (err) {
 			return console.error(err);
 		}
-		console.log("Data written successfully!");
+		res.send({ "statusCode": "OK" });
 	});
 });
 
@@ -69,7 +69,7 @@ app.get("/api/binance/getCurrentPriceAllSymbols", function (req, res) {
 
 	}).on('error', err => {
 		console.log('---- Network connection issue --------');
-		res.send({ "errCode": "NET_ERR" });
+		res.send({ "statusCode": "NET_ERR" });
 	});
 });
 

@@ -2,6 +2,9 @@ import { Component } from "@angular/core";
 
 import { Trade } from "./bObjects/trade";
 import { TradeHistoryService } from "./services/tradeHistoryService.service";
+import * as XLSX from 'xlsx';
+
+type AOA = any[][];
 
 @Component({
     selector: 'trade-history',
@@ -21,6 +24,7 @@ export class TradeHistoryComponent {
     private tradeType;
 
     private tradeHistory = [];
+    private importData: AOA = [[1, 2], [3, 4]];
 
 
     availableExchanges = [{ id: 'BIN', name: 'Binance' }, { id: 'POLO', name: 'Poloniex' }];
@@ -31,29 +35,10 @@ export class TradeHistoryComponent {
         this.getTradeHistory();
     }
 
-
-
-    // tradeHistory = [
-    //     {            
-    //         coinId: "XRP",
-    //         qty: 100,
-    //         price: 0.0000520,
-    //         date: "02-01-2018",
-    //         exchange: "BIN"
-    //     },
-    //     {            
-    //         coinId: "ETH",
-    //         qty: 0.05,
-    //         price: 0.1256,
-    //         date: "02-01-2018",
-    //         exchange: "BIN"
-    //     },
-    // ];
-
     getTradeHistory(): void {
         this.tradeHistoryService.getTradeHistory()
             .subscribe(data => {
-                this.tradeHistory = data
+                this.tradeHistory = data;
             },
             err => {
                 this.errorMessage = <any>err;
@@ -71,15 +56,11 @@ export class TradeHistoryComponent {
             date: this.date,
             exchange: this.selectedExchange
         };
-
-
         this.tradeHistory.push(trade);
     }
 
-    deleteTradeHistory(index): void{
-        //console.log(index)
-        this.tradeHistory.splice(index,1);
-        console.log(this.tradeHistory)        
+    deleteTradeHistory(index): void {
+        this.tradeHistory.splice(index, 1);
     }
 
     resetForm(): void {
@@ -91,13 +72,56 @@ export class TradeHistoryComponent {
         this.tradeType = '';
     }
 
-    submit(): void {
-        this.tradeHistoryService.saveTradeHistory(this.tradeHistory)
+    private saveData(newData: any): void {
+        this.tradeHistoryService.saveTradeHistory(newData)
             .subscribe(data => {
-                console.log('Data saved successfully...!!!')
-                console.log(data);
+                if (!(data["statusCode"] === "OK")) {
+                    console.log("Error returned from service...!!!");
+                    console.log(data);
+                } else {
+                    alert("Data saved successfully...!!!");
+                    this.getTradeHistory();                    
+                }
             },
             err => this.errorMessage = <any>err);
+    }
+    submit(): void {
+        this.saveData(this.tradeHistory);
+    }
+
+    onFileChange(evt: any) {
+        /* wire up file reader */
+        const target: DataTransfer = <DataTransfer>(evt.target);
+        if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+        const reader: FileReader = new FileReader();
+        reader.onload = (e: any) => {
+            /* read workbook */
+            const bstr: string = e.target.result;
+            const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+            /* grab first sheet */
+            const wsname: string = wb.SheetNames[0];
+            const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+            /* save data */
+            this.importData = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+            
+            var newData = [];
+            var headers = this.importData[0];
+            var row;
+            var obj = {};
+            for (var i = 1; i < this.importData.length; i++) {
+                row = this.importData[i];
+                obj = {};
+                for (var j = 0; j < row.length; j++) {                    
+                    obj[headers[j]] = isNaN(row[j]) ? row[j] : parseFloat(row[j]);
+                }
+                newData.push(obj);
+            }
+
+            this.saveData(newData);
+        };
+        reader.readAsBinaryString(target.files[0]);
     }
 
 }

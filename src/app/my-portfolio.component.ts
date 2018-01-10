@@ -50,7 +50,7 @@ export class MyPortfolioComponent {
                     alert("Please enter some data in trade history page...!!!");
                 } else {
                     that.tradeHistory.forEach(function (trade) {
-                        if (trade.tradeType === "Buy") {
+                        if (trade.tradeType === "BUY") {
                             that.createDetailedPortfolio(trade);
                             that.createConsolidatedPortfolio(trade);
                         }
@@ -140,7 +140,7 @@ export class MyPortfolioComponent {
         that.consolidatedTotalRow.profitPerc = 0;
 
         this.binanceService.getCurrentPriceAllSymbols().subscribe(data => {
-            if (data.errCode) {
+            if (data.statusCode === "NET_ERR") {
                 alert("Cannot connect to exchange...!!!. Please check your internet connection.");
             }
             else {
