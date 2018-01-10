@@ -50,10 +50,11 @@ export class MyPortfolioComponent {
                     alert("Please enter some data in trade history page...!!!");
                 } else {
                     that.tradeHistory.forEach(function (trade) {
-                        if (trade.tradeType === "BUY") {
-                            that.createDetailedPortfolio(trade);
-                            that.createConsolidatedPortfolio(trade);
-                        }
+                        //if (trade.tradeType === "BUY") {
+                        that.createDetailedPortfolio(trade);
+
+                        that.createConsolidatedPortfolio_2(trade);
+                        //}
                     });
 
                     // TO DO: Sort by date desc : 
@@ -61,6 +62,7 @@ export class MyPortfolioComponent {
                         return a.coinId < b.coinId ? 0 : 1;
                     });
 
+                    that.consolidatedPortfolio = that.consolidatedPortfolio.filter(x => (x.qty > 1) || (x.qty < 1 && (x.coinId == "BTC" || x.coinId == "ETH" || x.coinId == "BNB") )  );
                     that.consolidatedPortfolio.sort((a, b) => {
                         return a.coinId < b.coinId ? 0 : 1;
                     });
@@ -92,37 +94,102 @@ export class MyPortfolioComponent {
         that.portfolio.push(portfolioItem);
     }
 
-    private createConsolidatedPortfolio(trade: Trade): void {
+    // private createConsolidatedPortfolio(trade: Trade): void {
+    //     var that = this;
+    //     var currentPrice = trade.price;
+    //     var existingPortfolio = that.consolidatedPortfolio.filter(x => x.pairId === trade.pairId);
+
+    //     if (existingPortfolio.length <= 0) {
+    //         var portfolioItem = new Portfolio();
+    //         portfolioItem.pairId = trade.pairId;
+    //         portfolioItem.coinId = trade.coinId;
+    //         portfolioItem.qty = trade.qty;
+    //         portfolioItem.buyPrice = trade.price;
+    //         portfolioItem.buyBtcValue = trade.price * trade.qty;
+
+    //         // initialize current price with buying price        
+    //         portfolioItem.currentPrice = currentPrice;
+    //         portfolioItem.currentBtcValue = currentPrice * trade.qty;
+    //         portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+    //         portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+    //         that.consolidatedPortfolio.push(portfolioItem);
+    //     } else {
+    //         var portfolioItem = existingPortfolio[0];
+    //         portfolioItem.qty += trade.qty;
+    //         portfolioItem.buyPrice = (portfolioItem.buyPrice + trade.price) / 2;
+    //         portfolioItem.buyBtcValue = portfolioItem.buyBtcValue + trade.price * trade.qty;
+
+    //         portfolioItem.currentPrice = currentPrice;
+    //         portfolioItem.currentBtcValue = portfolioItem.qty * currentPrice;
+    //         portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+    //         portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+    //         //that.consolidatedPortfolio.push(portfolioItem);
+    //     }
+    // }
+
+    private createConsolidatedPortfolio_2(trade: Trade): void {
         var that = this;
         var currentPrice = trade.price;
         var existingPortfolio = that.consolidatedPortfolio.filter(x => x.pairId === trade.pairId);
+
+        // if (trade.coinId == "GVT") {
 
         if (existingPortfolio.length <= 0) {
             var portfolioItem = new Portfolio();
             portfolioItem.pairId = trade.pairId;
             portfolioItem.coinId = trade.coinId;
-            portfolioItem.qty = trade.qty;
-            portfolioItem.buyPrice = trade.price;
-            portfolioItem.buyBtcValue = trade.price * trade.qty;
 
-            // initialize current price with buying price        
-            portfolioItem.currentPrice = currentPrice;
-            portfolioItem.currentBtcValue = currentPrice * trade.qty;
-            portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
-            portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+            if (trade.tradeType === "BUY") {
+                portfolioItem.qty = trade.qty;
+                //portfolioItem.buyPrice = trade.price;
+                portfolioItem.buyBtcValue = trade.price * trade.qty;
+
+                // initialize current price with buying price        
+                portfolioItem.currentPrice = currentPrice;
+                portfolioItem.currentBtcValue = currentPrice * trade.qty;
+                portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+                portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+            }
+            else {
+                portfolioItem.qty = 0 - trade.qty;
+                //portfolioItem.buyPrice = trade.price;
+                portfolioItem.buyBtcValue = 0 - (trade.price * trade.qty);
+
+                // initialize current price with buying price        
+                portfolioItem.currentPrice = currentPrice;
+                portfolioItem.currentBtcValue = currentPrice * portfolioItem.qty;
+                portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+                portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+            }
+
             that.consolidatedPortfolio.push(portfolioItem);
+
         } else {
             var portfolioItem = existingPortfolio[0];
-            portfolioItem.qty += trade.qty;
-            portfolioItem.buyPrice = (portfolioItem.buyPrice + trade.price) / 2;
-            portfolioItem.buyBtcValue = portfolioItem.buyBtcValue + trade.price * trade.qty;
+            if (trade.tradeType === "BUY") {
+                portfolioItem.qty += trade.qty;
+                //portfolioItem.buyPrice = (portfolioItem.buyPrice + trade.price) / 2;
+                portfolioItem.buyBtcValue = portfolioItem.buyBtcValue + (trade.price * trade.qty);
 
-            portfolioItem.currentPrice = currentPrice;
-            portfolioItem.currentBtcValue = portfolioItem.qty * currentPrice;
-            portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
-            portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
-            //that.consolidatedPortfolio.push(portfolioItem);
+                portfolioItem.currentPrice = currentPrice;
+                portfolioItem.currentBtcValue = portfolioItem.qty * currentPrice;
+                portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+                portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+            }
+            else {
+                portfolioItem.qty -= trade.qty;
+                //portfolioItem.buyPrice = (portfolioItem.buyPrice + trade.price) / 2;
+                portfolioItem.buyBtcValue = portfolioItem.buyBtcValue - (trade.price * trade.qty);
+
+                portfolioItem.currentPrice = currentPrice;
+                portfolioItem.currentBtcValue = portfolioItem.qty * currentPrice;
+                portfolioItem.profit = portfolioItem.currentBtcValue - portfolioItem.buyBtcValue;
+                portfolioItem.profitPerc = portfolioItem.profit * 100 / portfolioItem.buyBtcValue;
+            }
+
         }
+
+        //}
     }
 
     public refresh(): void {
@@ -157,7 +224,7 @@ export class MyPortfolioComponent {
                     that.totalRow.buyBtcValue += item.buyBtcValue;
                     that.totalRow.currentBtcValue += item.currentBtcValue;
                 });
-                
+
                 that.totalRow.profit = that.totalRow.currentBtcValue - that.totalRow.buyBtcValue;
                 that.totalRow.profitPerc = that.totalRow.profit * 100 / that.totalRow.buyBtcValue;
 

@@ -21,7 +21,7 @@
                         <table class="table">
                                 <tr>
                                         <th>Coin</th>
-                                        <th>Buy Price</th>
+                                        <!-- <th>Buy Price</th> -->
                                         <th>Buy BTC Value</th>
                                         <th>Quantity</th>
                                         <th>Current Price</th>
@@ -31,7 +31,7 @@
                                 </tr>
                                 <tr *ngFor="let item of consolidatedPortfolio">
                                         <td>{{ item.coinId }}</td>
-                                        <td>{{ item.buyPrice.toFixed(8) }}</td>
+                                        <!-- <td>{{ item.buyPrice.toFixed(8) }}</td> -->
                                         <td>{{ item.buyBtcValue.toFixed(8) }}</td>
                                         <td>{{ item.qty.toFixed(4) }}</td>
                                         <td>{{ item.currentPrice.toFixed(8) }}</td>
@@ -42,7 +42,7 @@
                                 <tr></tr>
                                 <tr *ngIf="portfolio.length > 0" class="totalRowGreen">
                                         <td>Total</td>
-                                        <td></td>
+                                        <!-- <td></td> -->
                                         <td>{{ consolidatedTotalRow.buyBtcValue.toFixed(8) }}</td>
                                         <td></td>
                                         <td></td>
