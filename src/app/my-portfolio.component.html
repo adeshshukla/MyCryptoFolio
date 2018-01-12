@@ -1,5 +1,5 @@
 <form name="frmPortfolio" class="form-horizontal col-sm-12" novalidate>
-        
+
         <div class="col-md-12 form-group">
                 <h1 class="page-header">{{pageTitle}}</h1>
                 <div class="col-sm-offset-11 col-sm-1">
@@ -11,10 +11,8 @@
         </div>
 
         <!-- Consolidate Portfolio-->
-       <div class="col-md-12 form-group">
-
+        <div class="col-md-12 form-group">
                 <div class="col-md-12 accordion">
-                        <!--<button type="button" class="accordion"  data-toggle="collapse" data-target="#consolidatedPortfolio">Detailed Portfolio</button>-->
                         <a href="#consolidatedPortfolio" role="button" data-toggle="collapse">Consolidated Portfolio</a>
                 </div>
                 <div id="consolidatedPortfolio">
@@ -40,7 +38,7 @@
                                         <td [className]="item.profitPerc < 0? 'lossText':'profitText'">{{ item.profitPerc.toFixed(2) }}</td>
                                 </tr>
                                 <tr></tr>
-                                <tr *ngIf="portfolio.length > 0" class="totalRowGreen">
+                                <tr *ngIf="consolidatedPortfolio.length > 0" class="totalRowGreen">
                                         <td>Total</td>
                                         <!-- <td></td> -->
                                         <td>{{ consolidatedTotalRow.buyBtcValue.toFixed(8) }}</td>
@@ -54,13 +52,9 @@
                         </table>
                 </div>
         </div>
-
-        <!-- Detailed Portfolio -->
-        <!--<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
-        <div id="demo" class="col-md-12 form-group collapse">-->
-        <div class="col-md-12 form-group">
+        
+        <!--<div class="col-md-12 form-group">
                 <div class="col-md-12 accordion">
-                        <!--<button type="button" class="accordion"  data-toggle="collapse" data-target="#consolidatedPortfolio">Detailed Portfolio</button>-->
                         <a href="#detailedPortfolio" role="button" data-toggle="collapse">Detailed Portfolio</a>
                 </div>
 
@@ -100,6 +94,6 @@
                         </table>
                 </div>
 
-        </div>
+        </div>-->
 
 </form>

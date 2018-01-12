@@ -39,6 +39,11 @@ export class TradeHistoryComponent {
         this.tradeHistoryService.getTradeHistory()
             .subscribe(data => {
                 this.tradeHistory = data;
+
+                this.tradeHistory = this.tradeHistory.sort((a, b) => {
+                    // descending on date 
+                    return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                });
             },
             err => {
                 this.errorMessage = <any>err;
@@ -46,6 +51,7 @@ export class TradeHistoryComponent {
             });
     }
 
+    // Call from UI Add trade button.
     addTrade(): void {
         var trade = {
             pairId: this.coinId + "BTC",
@@ -59,10 +65,12 @@ export class TradeHistoryComponent {
         this.tradeHistory.push(trade);
     }
 
+    // Call from UI Delete button.
     deleteTradeHistory(index): void {
         this.tradeHistory.splice(index, 1);
     }
 
+    // Reset button
     resetForm(): void {
         this.coinId = '';
         this.qty = '';
@@ -72,6 +80,7 @@ export class TradeHistoryComponent {
         this.tradeType = '';
     }
 
+    // Save data to file.
     private saveData(newData: any): void {
         this.tradeHistoryService.saveTradeHistory(newData)
             .subscribe(data => {
@@ -80,15 +89,18 @@ export class TradeHistoryComponent {
                     console.log(data);
                 } else {
                     alert("Data saved successfully...!!!");
-                    this.getTradeHistory();                    
+                    this.getTradeHistory();
                 }
             },
             err => this.errorMessage = <any>err);
     }
+
+    // Submit button
     submit(): void {
         this.saveData(this.tradeHistory);
     }
 
+    // On select of upload file.
     onFileChange(evt: any) {
         /* wire up file reader */
         const target: DataTransfer = <DataTransfer>(evt.target);
@@ -105,7 +117,7 @@ export class TradeHistoryComponent {
 
             /* save data */
             this.importData = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-            
+
             var newData = [];
             var headers = this.importData[0];
             var row;
@@ -113,7 +125,7 @@ export class TradeHistoryComponent {
             for (var i = 1; i < this.importData.length; i++) {
                 row = this.importData[i];
                 obj = {};
-                for (var j = 0; j < row.length; j++) {                    
+                for (var j = 0; j < row.length; j++) {
                     obj[headers[j]] = isNaN(row[j]) ? row[j] : parseFloat(row[j]);
                 }
                 newData.push(obj);
