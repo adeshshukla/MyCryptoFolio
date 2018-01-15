@@ -4,6 +4,9 @@ export class Trade {
     tradeType: string;
     qty: number;
     price: number;
+    tradeAmt: number;
+    fee: number;
+    feeCoin: number;
     date: string;
-    exchange: string
+    exchange: string;
 }

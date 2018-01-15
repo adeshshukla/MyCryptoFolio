@@ -1,0 +1,96 @@
+<form name="frmrealizedPortfolio" class="form-horizontal col-sm-12" novalidate>
+
+    <div class="col-md-12 form-group">
+        <h1 class="page-header">{{pageTitle}}</h1>
+    </div>
+
+    <!-- Realized Portfolio-->
+    <div class="col-md-12 form-group">
+        <div class="col-md-12 accordion">
+            <a href="#realizedPortfolio" role="button" data-toggle="collapse">Realized Portfolio</a>
+        </div>
+        <div id="realizedPortfolio">
+            <table class="table">
+                <tr>
+                    <th>Coin</th>
+                    <th>Avg Buy Price</th>
+                    <th>Buy BTC Value</th>
+                    <th>Quantity</th>
+                    <th>Sell Date</th>
+                    <th>Sell Price</th>
+                    <th>Sell BTC Value</th>
+                    <th>Profit</th>
+                    <th>%</th>
+                </tr>
+                <tr *ngFor="let item of realizedPortfolio">
+                    <td>{{ item.coinId }}</td>
+                    <td>{{ item.buyPrice.toFixed(8) }}</td>
+                    <td>{{ item.buyBtcValue.toFixed(8) }}</td>
+                    <td>{{ item.qty.toFixed(4) }}</td>
+                    <td>{{ item.sellDate }}</td>
+                    <td>{{ item.sellPrice.toFixed(8) }}</td>
+                    <td>{{ item.sellBtcValue.toFixed(8) }}</td>
+                    <td [className]="item.profit < 0? 'lossText':'profitText'">{{ item.profit.toFixed(8) }}</td>
+                    <td [className]="item.profitPerc < 0? 'lossText':'profitText'">{{ item.profitPerc.toFixed(2) }}</td>
+                </tr>
+                <tr></tr>
+                <tr *ngIf="realizedPortfolio.length > 0" class="totalRowGreen">
+                    <td>Total</td>
+                    <td></td>
+                    <td>{{ realizedTotalRow.buyBtcValue.toFixed(8) }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ realizedTotalRow.sellBtcValue.toFixed(8) }}</td>
+                    <!--<td style="border-right:3px solid white;">{{ totalRow.profit.toFixed(8) }}</td>-->
+                    <td [className]="realizedTotalRow.profitPerc < 0? 'loss':'profit'" style="border-left:2px solid white;">{{ realizedTotalRow.profit.toFixed(8) }}</td>
+                    <td [className]="realizedTotalRow.profitPerc < 0? 'loss':'profit'" style="border-left:2px solid white;">{{ realizedTotalRow.profitPerc.toFixed(2) }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--<div class="col-md-12 form-group">
+                <div class="col-md-12 accordion">
+                        <a href="#detailedPortfolio" role="button" data-toggle="collapse">Detailed Portfolio</a>
+                </div>
+
+                <div id="detailedPortfolio" class="collapse">
+                        <table class="table">
+                                <tr>
+                                        <th>Coin</th>
+                                        <th>Buy Price</th>
+                                        <th>Buy BTC Value</th>
+                                        <th>Quantity</th>
+                                        <th>Current Price</th>
+                                        <th>Current BTC Value</th>
+                                        <th>Profit</th>
+                                        <th>%</th>
+                                </tr>
+                                <tr *ngFor="let item of portfolio">
+                                        <td>{{ item.coinId }}</td>
+                                        <td>{{ item.buyPrice.toFixed(8) }}</td>
+                                        <td>{{ item.buyBtcValue.toFixed(8) }}</td>
+                                        <td>{{ item.qty.toFixed(4) }}</td>
+                                        <td>{{ item.currentPrice.toFixed(8) }}</td>
+                                        <td>{{ item.currentBtcValue.toFixed(8) }}</td>
+                                        <td [className]="item.profit < 0? 'lossText':'profitText'">{{ item.profit.toFixed(8) }}</td>
+                                        <td [className]="item.profitPerc < 0? 'lossText':'profitText'">{{ item.profitPerc.toFixed(2) }}</td>
+                                </tr>
+                                <tr></tr>
+                                <tr *ngIf="portfolio.length > 0" class="totalRowGreen">
+                                        <td>Total</td>
+                                        <td></td>
+                                        <td>{{ totalRow.buyBtcValue.toFixed(8) }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{ totalRow.currentBtcValue.toFixed(8) }}</td>
+                                        <td [className]="totalRow.profit < 0? 'loss':'profit'" style="border-left:2px solid white;">{{ totalRow.profit.toFixed(8) }}</td>
+                                        <td [className]="totalRow.profitPerc < 0? 'loss':'profit'" style="border-left:2px solid white;">{{ totalRow.profitPerc.toFixed(2) }}</td>
+                                </tr>
+                        </table>
+                </div>
+
+        </div>-->
+
+</form>

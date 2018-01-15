@@ -30,7 +30,10 @@ export class TradeHistoryService {
         tradeType: element.Type,
         qty: element.Amount,
         price: element.Price,
+        tradeAmt: element.Total,
         date: element.Date,
+        fee: element.Fee,
+        feeCoin: element["Fee Coin"],
         exchange: "BIN"
       }
       tradeHistory.push(trade);
