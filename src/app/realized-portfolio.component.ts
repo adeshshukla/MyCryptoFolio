@@ -87,19 +87,39 @@ export class RealizedPortfolioComponent {
                     portfolioItem.buyPrice = portfolioItem.buyBtcValue / portfolioItem.qty;
                 }
                 else {
-                    portfolioItem.qty = trade.qty;
-                    portfolioItem.sellDate = trade.date;
-                    portfolioItem.sellPrice = trade.price;
-                    portfolioItem.sellBtcValue = trade.tradeAmt;
+                    // portfolioItem.qty = trade.qty;
+                    // portfolioItem.sellDate = trade.date;
+                    // portfolioItem.sellPrice = trade.price;
+                    // portfolioItem.sellBtcValue = trade.tradeAmt;
 
-                    portfolioItem.profit = portfolioItem.sellBtcValue - (portfolioItem.buyPrice * trade.qty);
-                    portfolioItem.profitPerc = portfolioItem.profit * 100 / (portfolioItem.buyPrice * trade.qty);
+                    // portfolioItem.profit = portfolioItem.sellBtcValue - (portfolioItem.buyPrice * trade.qty);
+                    // portfolioItem.profitPerc = portfolioItem.profit * 100 / (portfolioItem.buyPrice * trade.qty);
+
+                    var sellPortFolio: RealizedPortfolio = new RealizedPortfolio();
+                    sellPortFolio.pairId = portfolioItem.pairId;
+                    sellPortFolio.coinId = portfolioItem.coinId;
+                    // Calculate buy price of the exact sold qty according to avg buy price.
+                    sellPortFolio.buyPrice = portfolioItem.buyPrice;
+                    sellPortFolio.buyBtcValue = sellPortFolio.buyPrice * trade.qty;
+
+                    // Update the current availabel buyBtcValue after subtracting the btc value of the sold qty.
+                    portfolioItem.buyBtcValue = portfolioItem.buyBtcValue - sellPortFolio.buyBtcValue;
+                    portfolioItem.qty -= trade.qty;
+
+                    sellPortFolio.qty = trade.qty;
+                    sellPortFolio.sellDate = trade.date;
+                    sellPortFolio.sellPrice = trade.price;
+                    sellPortFolio.sellBtcValue = trade.tradeAmt;
+
+                    sellPortFolio.profit = sellPortFolio.sellBtcValue - sellPortFolio.buyBtcValue;
+                    sellPortFolio.profitPerc = sellPortFolio.profit * 100 / sellPortFolio.buyBtcValue;
+
 
                     // Add to realized portfolio list.
-                    that.realizedPortfolio.push(portfolioItem);
+                    that.realizedPortfolio.push(sellPortFolio);
                     // Add to total Row.
-                    that.realizedTotalRow.buyBtcValue += portfolioItem.buyBtcValue;
-                    that.realizedTotalRow.sellBtcValue += portfolioItem.sellBtcValue;
+                    that.realizedTotalRow.buyBtcValue += sellPortFolio.buyBtcValue;
+                    that.realizedTotalRow.sellBtcValue += sellPortFolio.sellBtcValue;
                 }
             }
         });
