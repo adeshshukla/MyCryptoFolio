@@ -22,6 +22,9 @@ export class MyPortfolioComponent {
     private consolidatedPortfolio: Portfolio[];
     private consolidatedTotalRow = new Portfolio();
 
+    private tempPortfolio: Portfolio[];
+    private tempTotalRow = new Portfolio();
+
     constructor(private tradeHistoryService: TradeHistoryService, private binanceService: BinanceService) {
         // this.totalRow.buyBtcValue = 0;
         // this.totalRow.currentBtcValue = 0;
@@ -31,6 +34,13 @@ export class MyPortfolioComponent {
         // this.portfolio = [];
 
         this.consolidatedPortfolio = [];
+
+        this.tempPortfolio = [];
+        this.tempTotalRow.buyBtcValue = 0;
+        this.tempTotalRow.currentBtcValue = 0;
+        this.tempTotalRow.profit = 0;
+        this.tempTotalRow.profitPerc = 0;
+
         this.loadPortfolio();
     }
 
@@ -48,9 +58,12 @@ export class MyPortfolioComponent {
                     alert("Please enter some data in trade history page...!!!");
                 } else {
                     // Sorting on date ascending.
-                    that.tradeHistory = data.sort((a, b) => {                        
+                    that.tradeHistory = data.sort((a, b) => {
                         return new Date(a.date) < new Date(b.date) ? -1 : 1;
                     });
+
+                    // Realized Portfolio
+                    that.createTempPortfolio();
 
                     that.tradeHistory.forEach(function (trade) {
                         that.createConsolidatedPortfolio_2(trade);
@@ -59,6 +72,12 @@ export class MyPortfolioComponent {
                     that.consolidatedPortfolio = that.consolidatedPortfolio.filter(x => (x.qty > 1) || (x.qty < 1 && (x.coinId == "BTC" || x.coinId == "ETH" || x.coinId == "BNB")));
 
                     that.consolidatedPortfolio.sort((a, b) => {
+                        return a.coinId < b.coinId ? -1 : 1;
+                    });
+
+                     that.tempPortfolio = that.tempPortfolio.filter(x => (x.qty > 1) || (x.qty < 1 && (x.coinId == "BTC" || x.coinId == "ETH" || x.coinId == "BNB")));
+
+                    that.tempPortfolio.sort((a, b) => {
                         return a.coinId < b.coinId ? -1 : 1;
                     });
 
@@ -187,6 +206,39 @@ export class MyPortfolioComponent {
         }
     }
 
+    public createTempPortfolio(): void {
+        var that = this;
+
+        // Sorted trade history by date in desc order.
+        that.tradeHistory.forEach(function (trade) {
+            var existingPortfolio = that.tempPortfolio.filter(x => x.pairId === trade.pairId);
+
+            // If the pair is not in the temp portfolio list.
+            if (existingPortfolio.length <= 0) {
+                var portfolioItem = new Portfolio();
+                portfolioItem.pairId = trade.pairId;
+                portfolioItem.coinId = trade.coinId;
+                portfolioItem.qty = trade.qty;
+                portfolioItem.buyPrice = trade.price;
+                portfolioItem.buyBtcValue = trade.tradeAmt;
+
+                that.tempPortfolio.push(portfolioItem);
+            } else {
+                var portfolioItem = existingPortfolio[0];
+                if (trade.tradeType === "BUY") {
+                    portfolioItem.qty += trade.qty;
+                    portfolioItem.buyBtcValue = portfolioItem.buyBtcValue + trade.tradeAmt;
+                    portfolioItem.buyPrice = portfolioItem.buyBtcValue / portfolioItem.qty;
+                }
+                else {
+                    portfolioItem.buyBtcValue = portfolioItem.buyBtcValue - portfolioItem.buyPrice * trade.qty;
+                    portfolioItem.qty -= trade.qty;
+                    portfolioItem.buyPrice = portfolioItem.buyBtcValue / portfolioItem.qty;
+                }
+            }
+        });
+    }
+
     public refresh(): void {
         var that = this;
         // that.totalRow = new Portfolio();
@@ -240,6 +292,24 @@ export class MyPortfolioComponent {
                 // Calculate total row
                 that.consolidatedTotalRow.profit = that.consolidatedTotalRow.currentBtcValue - that.consolidatedTotalRow.buyBtcValue;
                 that.consolidatedTotalRow.profitPerc = that.consolidatedTotalRow.profit * 100 / that.consolidatedTotalRow.buyBtcValue;
+
+                // Temp portfolio
+                that.tempPortfolio.forEach(function (item) {
+                    var coin = data.filter(x => x.symbol == item.pairId);
+                    if (coin && coin.length > 0) {
+                        item.currentPrice = parseFloat(coin[0].price);
+                        item.currentBtcValue = item.currentPrice * item.qty;
+                        item.profit = item.currentBtcValue - item.buyBtcValue;
+                        item.profitPerc = item.profit * 100 / item.buyBtcValue;
+                    }
+
+                    that.tempTotalRow.buyBtcValue += item.buyBtcValue;
+                    that.tempTotalRow.currentBtcValue += item.currentBtcValue;
+                });
+
+                // Calculate total row
+                that.tempTotalRow.profit = that.tempTotalRow.currentBtcValue - that.tempTotalRow.buyBtcValue;
+                that.tempTotalRow.profitPerc = that.tempTotalRow.profit * 100 / that.tempTotalRow.buyBtcValue;
             }
         }, err => {
             console.log("-----------------Error returned from binance Service-------------");
