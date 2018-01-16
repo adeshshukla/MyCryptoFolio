@@ -17,28 +17,7 @@ export class TradeHistoryService {
 
   getTradeHistory(): Observable<Trade[]> {
     var url = this.tradeApiUrl + '/getTradeHistory';
-    return this.http.get(url).map(this.createTradeHistory).catch(this.handleError);
-  }
-
-  createTradeHistory(res: Response) {
-    let data = res.json();
-    var tradeHistory: Trade[] = [];
-    data.forEach(element => {
-      var trade: Trade = {
-        pairId: element.Market,
-        coinId: element.Market.substring(0, element.Market.length - 3),
-        tradeType: element.Type,
-        qty: element.Amount,
-        price: element.Price,
-        tradeAmt: element.Total,
-        date: element.Date,
-        fee: element.Fee,
-        feeCoin: element["Fee Coin"],
-        exchange: "BIN"
-      }
-      tradeHistory.push(trade);
-    });
-    return tradeHistory;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
   saveTradeHistory(tradeHistory: Trade[]): Observable<Trade[]> {

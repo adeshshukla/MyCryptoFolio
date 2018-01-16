@@ -1,107 +1,128 @@
 <form name="my_form" class="form-horizontal col-sm-12" novalidate>
   <h1 class="page-header"> {{pageTitle}}</h1>
-  
-  <div class="row form-group">
-    <label class="control-label col-sm-2" for="txtCoin">Coin</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="txtCoin" name="txtCoin" placeholder="Coin Name" [(ngModel)]="coinId">
-    </div>
-
-    <label class="col-sm-offset-1 control-label col-sm-2" for="txtQty">Quantity</label>
-    <div class="col-sm-3">
-      <input type="number" class="form-control" id="txtQty" name="txtQty" placeholder="Quantity" [(ngModel)]="qty">
-    </div>
+  <div class="col-md-12 accordion">
+    <a href="#manualEntryDiv" role="button" data-toggle="collapse">Manual Entry</a>
   </div>
+  <div id="manualEntryDiv" class="collapse">
+    <div class="row form-group">
+      <label class="control-label col-sm-2" for="txtCoin">Coin</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="txtCoin" name="txtCoin" placeholder="Coin Name" [(ngModel)]="coinId">
+      </div>
 
-  <div class="row form-group">
-    <label class="control-label col-sm-2" for="txtPrice">Price</label>
-    <div class="col-sm-3">
-      <input type="number" class="form-control" id="txtPrice" name="txtPrice" placeholder="Price" [(ngModel)]="price">
+      <label class="col-sm-offset-1 control-label col-sm-2" for="txtQty">Quantity</label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" id="txtQty" name="txtQty" placeholder="Quantity" [(ngModel)]="qty">
+      </div>
     </div>
 
-    <label class="col-sm-offset-1 control-label col-sm-2" for="txtDate">Date</label>
-    <div class="col-sm-3">
-      <input type="date" class="form-control" id="txtDate" name="Date" placeholder="Date" [(ngModel)]="date">
-    </div>
-  </div>
+    <div class="row form-group">
+      <label class="control-label col-sm-2" for="txtPrice">Price</label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" id="txtPrice" name="txtPrice" placeholder="Price" [(ngModel)]="price">
+      </div>
 
-  <div class="row form-group">
-    <label class="control-label col-sm-2" for="ddlType">Trade type</label>
-    <div class="col-sm-3">
-      <select class="form-control" id="ddlType" name="Trade type" [(ngModel)]="tradeType">
+      <label class="col-sm-offset-1 control-label col-sm-2" for="txtDate">Date</label>
+      <div class="col-sm-3">
+        <input type="date" class="form-control" id="txtDate" name="Date" placeholder="Date" [(ngModel)]="date">
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <label class="control-label col-sm-2" for="ddlType">Trade type</label>
+      <div class="col-sm-3">
+        <select class="form-control" id="ddlType" name="Trade type" [(ngModel)]="tradeType">
           <option value="BUY">Buy</option>        
           <option value="SELL">Sell</option>        
       </select>
-    </div>
+      </div>
 
-    <label class="col-sm-offset-1 control-label col-sm-2" for="ddlExchange">Exchange</label>
-    <div class="col-sm-3">
-      <!--<select class="form-control" name="Exchange" ng-model="selectedExchange" ng-options="x.name for x in availableExchanges"></select>-->
-      <select class="form-control" name="Exchange" [disabled]="true" [(ngModel)]="selectedExchange">
-                  <!--<option>--Select Exchange--</option>-->
+      <label class="col-sm-offset-1 control-label col-sm-2" for="ddlExchange">Exchange</label>
+      <div class="col-sm-3">
+        <select class="form-control" name="Exchange" [disabled]="true" [(ngModel)]="selectedExchange">                  
         <option *ngFor="let exchange of availableExchanges" value= {{exchange.id}}>
           {{exchange.name}}
         </option>
       </select>
-    </div>
-  </div>
-
-  <div class="row form-group">
-    <label class="control-label col-sm-2" for="txtPrice">Import Excel</label>
-    <div class="col-sm-3">
-      <input #fileInput type="file" class="upload-input" (change)="onFileChange($event)" multiple="false">
-      <button class="btn btn-lg upload-btn" type="button" (click)="fileInput.click()">Upload File</button>      
+      </div>
     </div>
 
-    <div class="col-sm-offset-3 col-sm-2" style="width:12%">
-     <button type="button" class="btn btn-danger btn-block" (click)="resetForm()" ng-disabled="!my_form.$dirty">
+    <div class="row form-group">
+      <div class="col-sm-offset-8 col-sm-2" style="width:12%">
+        <button type="button" class="btn btn-danger btn-block" (click)="resetForm()" ng-disabled="!my_form.$dirty">
                     <span class="glyphicon glyphicon-refresh"></span> Reset
                   </button>
-    </div>
-    <div class="col-sm-2" style="width:12%">
-      <!--<input type="button" class="btn btn-primary btn-block" ng-click="addChefTask(my_form)" ng-disabled="my_form.$invalid" value="Add Task" />                -->
-      <button type="button" class="btn btn-primary btn-block" (click)="addTrade()" ng-disabled="my_form.$invalid">
+      </div>
+      <div class="col-sm-2" style="width:12%">
+        <button type="button" class="btn btn-primary btn-block" (click)="addTrade()" ng-disabled="my_form.$invalid">
                   <span class="glyphicon glyphicon-plus"></span> Add Trade
       </button>
+      </div>
     </div>
   </div>
 
-  <!-- Table-->
-  <div class="col-md-12 form-group">
-    <table class="table">
-      <tr>
-        <th>Coin</th>
-        <th>Type</th>
-        <th>Qty</th>
-        <th>Price</th>
-        <th>Date</th>
-        <th>Exchange</th>
-        <th></th>
-      </tr>
-      <tr *ngFor="let trade of tradeHistory; let i = index">
-        <td>{{ trade.coinId }}</td>
-        <td [style.color]="trade.tradeType == 'BUY' ? 'green':'red' ">{{ trade.tradeType }}</td>
-        <td>{{ trade.qty.toFixed(4) }}</td>
-        <td>{{ trade.price.toFixed(8) }}</td>
-        <td>{{ trade.date }}</td>
-        <td>{{ trade.exchange }}</td>
-         <td>
-          <a role="button" (click)="deleteTradeHistory(i)">
-            <span class="glyphicon glyphicon-trash"></span>
-          </a>
-        </td> 
-      </tr>
-    </table>
+  <div class="col-md-12 accordion">
+    <a href="#excelUploadDiv" role="button" data-toggle="collapse">Excel Upload</a>
+  </div>
+  <div id="excelUploadDiv">
+    <div class="row form-group">
+      <label class="control-label col-sm-2" for="ddlExcelExchange">Exchange</label>
+      <div class="col-sm-3">
+        <select id="ddlExcelExchange" class="form-control" name="Exchange" [(ngModel)]="excelselectedExchange" required>                  
+        <option *ngFor="let exchange of availableExchanges" value= {{exchange.id}}>
+          {{exchange.name}}
+        </option>
+      </select>
+      </div>
 
+      <label class="control-label col-sm-offset-1 col-sm-2" for="txtPrice">Import Excel</label>
+      <div class="col-sm-3">
+        <input #fileInput type="file" class="upload-input" (change)="onFileChange($event)" multiple="false">
+        <button class="btn btn-lg upload-btn" type="button" [disabled]="!excelselectedExchange" (click)="fileInput.click()">Upload File</button>
+      </div>
+    </div>
   </div>
 
-  <div class="row form-group" style="padding-right:40px;">
-    <div class="col-sm-offset-10 col-sm-2" style="width:12%; float:right;">
-      <button type="button" class="btn btn-success btn-block" (click)="submit()">
+  <div class="col-md-12 accordion">
+    <a href="#tradeHistoryList" role="button" data-toggle="collapse">Trade History</a>
+  </div>
+  <div id="tradeHistoryList">
+    <!-- Table-->
+    <div class="col-md-12 form-group">
+      <table class="table">
+        <tr>
+          <th>Coin</th>
+          <th>Type</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Date</th>
+          <th>Exchange</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let trade of tradeHistory; let i = index">
+          <td>{{ trade.coinId }}</td>
+          <td [style.color]="trade.tradeType == 'BUY' ? 'green':'red' ">{{ trade.tradeType }}</td>
+          <td>{{ trade.qty.toFixed(4) }}</td>
+          <td>{{ trade.price.toFixed(8) }}</td>
+          <td>{{ trade.date }}</td>
+          <td>{{ trade.exchange }}</td>
+          <td>
+            <a role="button" (click)="deleteTradeHistory(i)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div class="row form-group" style="padding-right:40px;">
+      <div class="col-sm-offset-10 col-sm-2" style="width:12%; float:right;">
+        <button type="button" class="btn btn-success btn-block" (click)="submit()">
                 <span class="glyphicon glyphicon-floppy-save"></span> Submit
               </button>
+      </div>
     </div>
   </div>
-
 
 </form>

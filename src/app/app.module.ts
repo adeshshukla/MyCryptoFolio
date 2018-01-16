@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
 
 import { TradeHistoryService } from "./services/tradeHistoryService.service";
 import { BinanceService } from "./services/binanceService.service";
+import { MapperService } from "./services/mapperService.service";
 
 import { AppComponent } from './app.component';
 import { MyPortfolioComponent } from "./my-portfolio.component";
@@ -31,7 +32,7 @@ import { RealizedPortfolioComponent } from "./realized-portfolio.component";
       { path: '', redirectTo: '/myPortfolio', pathMatch: 'full' }
     ])
   ],
-  providers: [TradeHistoryService, BinanceService],
+  providers: [TradeHistoryService, BinanceService, MapperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

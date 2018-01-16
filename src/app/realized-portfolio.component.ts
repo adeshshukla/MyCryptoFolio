@@ -87,14 +87,6 @@ export class RealizedPortfolioComponent {
                     portfolioItem.buyPrice = portfolioItem.buyBtcValue / portfolioItem.qty;
                 }
                 else {
-                    // portfolioItem.qty = trade.qty;
-                    // portfolioItem.sellDate = trade.date;
-                    // portfolioItem.sellPrice = trade.price;
-                    // portfolioItem.sellBtcValue = trade.tradeAmt;
-
-                    // portfolioItem.profit = portfolioItem.sellBtcValue - (portfolioItem.buyPrice * trade.qty);
-                    // portfolioItem.profitPerc = portfolioItem.profit * 100 / (portfolioItem.buyPrice * trade.qty);
-
                     var sellPortFolio: RealizedPortfolio = new RealizedPortfolio();
                     sellPortFolio.pairId = portfolioItem.pairId;
                     sellPortFolio.coinId = portfolioItem.coinId;
