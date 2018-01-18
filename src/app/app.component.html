@@ -1,29 +1,31 @@
 <!--<h1 class="page-header">App component page</h1>-->
 
+<!-- Loader -->
+<angular-loader></angular-loader>
+
 <!-- Nav bar-->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid" style="max-height:30px;">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar" aria-expanded="false"
+                aria-controls="sidebar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-            <a class="navbar-brand" href="#"><img src="assets/logo.png" style="width:8%; margin-right:5px;"/>My Crypto Portfolio</a>
+            <a class="navbar-brand" href="#"><img src="assets/logo.png" style="width:8%; margin-right:5px;" />Crypto folio</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <!--<div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Dashboard</a></li>
-                <!--<li><a href="#">Settings</a></li>-->
+                <li><a href="#">Settings</a></li>
                 <li><a href="#">Profile</a></li>
-
             </ul>
-            <!--<form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>-->
-        </div>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search...">
+            </form>
+        </div>-->
     </div>
 </nav>
 
@@ -37,7 +39,7 @@
                     <!--<li class="active"><a href="#">Dashboard <span class="sr-only">(current)</span></a></li>-->
                     <li routerLinkActive="active"><a routerLink="/myPortfolio">My Portfolio</a></li>
                     <li routerLinkActive="active"><a routerLink="/realizedPortfolio">Realized Profit/Loss</a></li>
-                    <li routerLinkActive="active"><a routerLink="/tradeHistory">Trade History</a></li>                    
+                    <li routerLinkActive="active"><a routerLink="/tradeHistory">Trade History</a></li>
                     <!--<li><a href="/employeeDetail/add" routerLinkActive="active">New Employee</a></li>            -->
                 </ul>
             </div>
