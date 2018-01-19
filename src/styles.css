@@ -8,12 +8,11 @@ body{
     background-color: #555555;
 }
 
-.page-header{    
-    /*background-color:#eaac53;
-    color: white;
-    padding: 5px 15px   ;*/
+.page-header{            
+    padding: 5px 5px;
     border-bottom: 2px solid #eaac53 ;
 }
+
 .lossText{
     /*color: red; */
     color: #bb1818;
@@ -48,6 +47,7 @@ td{
     background-color:#eaac53;
     /*background-color: #f97849;*/
     /*background-color:maroon;*/
+    margin:5px 0;
     color: white;
     font-size: 1.4em;    
     text-decoration: none;    
@@ -91,3 +91,7 @@ td{
   background-color: #FA8900;
   border: none;
 }
+
+div.seperator{ padding:0 20px!important;}
+div.seperator h3 { width:100%; text-align:center; border-bottom: 1px solid #eaac53; line-height:0.1em; margin:10px 0 20px;} 
+div.seperator h3 span { background:#f4f4f4;   padding:0 10px; }

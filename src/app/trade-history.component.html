@@ -3,7 +3,48 @@
   <div class="col-md-12 accordion">
     <a href="#manualEntryDiv" role="button" data-toggle="collapse">Manual Entry</a>
   </div>
-  <div id="manualEntryDiv" class="collapse">
+  <div id="manualEntryDiv">
+    <div id="excelUploadDiv">
+      <div class="row form-group">
+        <label class="control-label col-sm-2" for="ddlExcelExchange">Exchange</label>
+        <div class="col-sm-3">
+          <select id="ddlExcelExchange" class="form-control" name="Exchange" [(ngModel)]="excelselectedExchange" required>                  
+        <option *ngFor="let exchange of availableExchanges" value= {{exchange.id}}>
+          {{exchange.name}}
+        </option>
+      </select>
+        </div>
+
+        <label class="control-label col-sm-offset-1 col-sm-2" for="txtPrice">Import Excel</label>
+        <div class="col-sm-3">
+          <input #fileInput type="file" class="upload-input" (change)="onFileChange($event)" multiple="false">
+          <button class="btn btn-lg upload-btn" type="button" [disabled]="!excelselectedExchange" (click)="fileInput.click()">Upload File</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<div class="col-md-12 form-group">
+      <div class="col-md-12">
+        <div class="horizontalRow"></div>
+        <div class="seperatorText">
+          <h4>OR</h4>
+        </div>
+        <div class="horizontalRow"></div>       
+      </div>
+    </div>-->
+
+    <!--<div class="col-md-12 form-group">
+      <h3><span>OR</span></h3>
+    </div>-->
+
+    <div class="col-md-12 form-group">
+      <div class="col-md-12 seperator">
+        <h3><span>OR</span></h3>
+      </div>
+    </div>
+
+
     <div class="row form-group">
       <label class="control-label col-sm-2" for="txtCoin">Coin</label>
       <div class="col-sm-3">
@@ -39,7 +80,7 @@
 
       <label class="col-sm-offset-1 control-label col-sm-2" for="ddlExchange">Exchange</label>
       <div class="col-sm-3">
-        <select class="form-control" name="Exchange" [disabled]="true" [(ngModel)]="selectedExchange">                  
+        <select class="form-control" name="manExchange" [disabled]="true" [(ngModel)]="selectedExchange">                  
         <option *ngFor="let exchange of availableExchanges" value= {{exchange.id}}>
           {{exchange.name}}
         </option>
@@ -49,38 +90,19 @@
 
     <div class="row form-group">
       <div class="col-sm-offset-8 col-sm-2" style="width:12%">
-        <button type="button" class="btn btn-danger btn-block" (click)="resetForm()" ng-disabled="!my_form.$dirty">
+        <button type="button" class="btn btn-danger btn-block" (click)="resetForm()">
                     <span class="glyphicon glyphicon-refresh"></span> Reset
                   </button>
       </div>
       <div class="col-sm-2" style="width:12%">
-        <button type="button" class="btn btn-primary btn-block" (click)="addTrade()" ng-disabled="my_form.$invalid">
+        <button type="button" class="btn btn-primary btn-block" (click)="addTrade()">
                   <span class="glyphicon glyphicon-plus"></span> Add Trade
       </button>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-12 accordion">
-    <a href="#excelUploadDiv" role="button" data-toggle="collapse">Excel Upload</a>
-  </div>
-  <div id="excelUploadDiv">
-    <div class="row form-group">
-      <label class="control-label col-sm-2" for="ddlExcelExchange">Exchange</label>
-      <div class="col-sm-3">
-        <select id="ddlExcelExchange" class="form-control" name="Exchange" [(ngModel)]="excelselectedExchange" required>                  
-        <option *ngFor="let exchange of availableExchanges" value= {{exchange.id}}>
-          {{exchange.name}}
-        </option>
-      </select>
-      </div>
 
-      <label class="control-label col-sm-offset-1 col-sm-2" for="txtPrice">Import Excel</label>
-      <div class="col-sm-3">
-        <input #fileInput type="file" class="upload-input" (change)="onFileChange($event)" multiple="false">
-        <button class="btn btn-lg upload-btn" type="button" [disabled]="!excelselectedExchange" (click)="fileInput.click()">Upload File</button>
-      </div>
-    </div>
+
   </div>
 
   <div class="col-md-12 accordion">
@@ -88,33 +110,30 @@
   </div>
   <div id="tradeHistoryList">
     <!-- Table-->
-    <div class="col-md-12 form-group">
-      <table class="table">
-        <tr>
-          <th>Coin</th>
-          <th>Type</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Date</th>
-          <th>Exchange</th>
-          <th></th>
-        </tr>
-        <tr *ngFor="let trade of tradeHistory; let i = index">
-          <td>{{ trade.coinId }}</td>
-          <td [style.color]="trade.tradeType == 'BUY' ? 'green':'red' ">{{ trade.tradeType }}</td>
-          <td>{{ trade.qty.toFixed(4) }}</td>
-          <td>{{ trade.price.toFixed(8) }}</td>
-          <td>{{ trade.date }}</td>
-          <td>{{ trade.exchange }}</td>
-          <td>
-            <a role="button" (click)="deleteTradeHistory(i)">
-              <span class="glyphicon glyphicon-trash"></span>
-            </a>
-          </td>
-        </tr>
-      </table>
-
-    </div>
+    <table class="table">
+      <tr>
+        <th>Coin</th>
+        <th>Type</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Date</th>
+        <th>Exchange</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let trade of tradeHistory; let i = index">
+        <td>{{ trade.coinId }}</td>
+        <td [style.color]="trade.tradeType == 'BUY' ? 'green':'red' ">{{ trade.tradeType }}</td>
+        <td>{{ trade.qty.toFixed(4) }}</td>
+        <td>{{ trade.price.toFixed(8) }}</td>
+        <td>{{ trade.date }}</td>
+        <td>{{ trade.exchange }}</td>
+        <td>
+          <a role="button" (click)="deleteTradeHistory(i)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </a>
+        </td>
+      </tr>
+    </table>
 
     <div class="row form-group" style="padding-right:40px;">
       <div class="col-sm-offset-10 col-sm-2" style="width:12%; float:right;">
