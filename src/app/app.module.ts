@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Http, HttpModule, RequestOptions, XHRBackend, JsonpModule } from '@angular/http';
 import { FormsModule } from "@angular/forms";
+import { ChartModule } from 'angular2-highcharts';
 
-
+import { PortfolioService } from "./services/portfolioService.service";
 import { TradeHistoryService } from "./services/tradeHistoryService.service";
 import { BinanceService } from "./services/binanceService.service";
 import { MapperService } from "./services/mapperService.service";
@@ -29,8 +30,9 @@ import { RealizedPortfolioComponent } from "./realized-portfolio.component";
       { path: 'tradeHistory', component: TradeHistoryComponent },
       { path: 'realizedPortfolio', component: RealizedPortfolioComponent },
       // { path:'employeeDetail/:mode/:id', component:EmployeeDetailComponent}      
-      { path: '', redirectTo: '/myPortfolio', pathMatch: 'full' }
+      { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
     ])
+    , ChartModule.forRoot(require('highcharts'))
   ],
   providers: [
     LoaderService,
@@ -41,7 +43,7 @@ import { RealizedPortfolioComponent } from "./realized-portfolio.component";
       },
       deps: [XHRBackend, RequestOptions, LoaderService]
     },
-    TradeHistoryService, BinanceService, MapperService
+    TradeHistoryService, BinanceService, MapperService, PortfolioService
   ],
   bootstrap: [AppComponent]
 })

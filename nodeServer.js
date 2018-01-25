@@ -49,6 +49,44 @@ app.post("/api/trade/saveTradeHistory", function (req, res) {
 	});
 });
 
+app.post("/api/portfolio/savePortfolio", function (req, res) {
+	var data = JSON.stringify(req.body);
+	fs.writeFile('./db/portfolioPerformance.txt', data, function (err) {
+		if (err) {
+			return console.error(err);
+		}
+		res.send({ "statusCode": "OK" });
+	});
+	// fs.open('./db/portfolioPerformance.txt', 'a', (err, fd) => {
+	// 	if (err) throw err;
+	// 	fs.appendFile(fd, data, (err) => {
+	// 		fs.close(fd, (err) => {
+	// 			if (err) throw err;
+	// 		});
+	// 		if (err) throw err;
+	// 		res.send({ "statusCode": "OK" });
+	// 	});
+	// });	
+});
+
+app.get("/api/portfolio/getPortfolio", function (req, res) {
+	fs.readFile('./db/portfolioPerformance.txt', 'utf8', function (err, contents) {
+		if (err) {
+			// console.log(err);
+			res.send(err);
+		}
+		else {
+			var jsonObj = [];
+			if (contents) {
+				jsonObj = JSON.parse(contents);
+			}
+
+			// send data to front end
+			res.send(jsonObj);
+		}
+	});
+});
+
 app.get("/api/binance/getCurrentPriceAllSymbols", function (req, res) {
 
 	const binanceApiUrl = 'https://api.binance.com';
