@@ -37,8 +37,8 @@ export class MyPortfolioComponent {
                 }else{
                     that.performanceData = [];
                 }                   
-                console.log('performabece data in constructor')
-                console.log(that.performanceData);
+                // console.log('performabece data in constructor')
+                // console.log(that.performanceData);
                 
                 this.portfolioService.consolidatedPortfolio.subscribe(data => {
                     that.portfolio = data["portfolio"];
@@ -85,7 +85,7 @@ export class MyPortfolioComponent {
                     console.log("Error returned from service...!!!");
                     console.log(data);
                 } else {
-                    console.log("Current portfolio snap shot saved successfully...!!!");                    
+                    console.log("Portfolio snap shot saved successfully...!!!");
                 }
             },
             err => this.errorMsg = <any>err);

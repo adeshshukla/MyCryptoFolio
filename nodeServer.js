@@ -7,8 +7,9 @@ const https = require("https");
 
 // Body Parser Middleware
 app.use(express.static(__dirname + '/public'));                 // set the static files location /public/img will be /img for users
-app.use(bodyParser.urlencoded({ 'extended': 'true' }));            // parse application/x-www-form-urlencoded
-app.use(bodyParser.json());                                     // parse application/json
+// app.use(bodyParser.urlencoded({ 'extended': 'true' }));  
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));          // parse application/x-www-form-urlencoded
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 
 //CORS Middleware

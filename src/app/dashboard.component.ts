@@ -12,6 +12,7 @@ export class DashboardComponent {
     private errorMsg;
     private options: Object;
     private chartOptions: Object;
+    private pieOptions: Object;
 
     constructor(private portfolioService: PortfolioService) {
         this.options = {
@@ -27,12 +28,13 @@ export class DashboardComponent {
         var that = this;
         that.portfolioService.getPortfolioFromDb()
             .subscribe(data => {
-                console.log('Performance Data read from DB');
-                console.log(data);
+                // console.log('Performance Data read from DB');
+                // console.log(data);
                 if (data.length > 0) {
                     that.configureChart(data);
+                    that.configurePieChart(data);
                 }
-                else{
+                else {
                     alert("Please go to portfolio page to initialize Performance data...!!!");
                 }
             },
@@ -44,17 +46,14 @@ export class DashboardComponent {
 
     private configureChart(data: any): void {
         var chartdata = [];
-        // data.forEach(element => {
-        //     chartdata.push(element["totalValue"]);            
-        // });
         chartdata = data.map(item => {
             return {
                 x: new Date(item['timestamp']),
                 y: item["totalValue"],
             }
-        })
-        console.log('Chart data-----------')
-        console.log(chartdata)
+        });
+        // console.log('Chart data-----------')
+        // console.log(chartdata)
         this.chartOptions = {
             chart: {
                 zoomType: 'x'
@@ -70,16 +69,64 @@ export class DashboardComponent {
                 title: {
                     text: 'Date'
                 },
-                tickInterval: 3600 * 1000, // 1 hour ; 24 hr = 24*3600*1000(miliseconds)
+                tickInterval: 24 * 3600 * 1000, // 1 hour ; 24 hr = 24*3600*1000(miliseconds)
                 minTickInterval: 60 * 1000
             },
             yAxis: {
                 title: {
                     text: 'BTC Value'
                 },
-                // tickInterval: 0.005
+                tickInterval: 0.005
             },
         };
+    }
+
+    private configurePieChart(data: any) {
+        var lastSnapshot = data[data.length - 1];
+        var pieData = lastSnapshot["allCoins"].map(item => {
+            return {
+                name: item["coinId"],
+                y: (item["value"] * 100 / lastSnapshot["totalValue"])
+            }
+        });
+
+        // sort in descending.
+        pieData = pieData.sort( (a,b)=> {
+            return b.y - a.y;
+        });
+        // pieData[0]["sliced"] = true;
+        // pieData[0]["selected"] = true;        
+
+        // Build the chart
+        this.pieOptions = {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Coin Holdings'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Holdings',
+                colorByPoint: true,
+                data: pieData
+            }]
+        }
     }
 
 }
