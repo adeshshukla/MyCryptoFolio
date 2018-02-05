@@ -40,12 +40,15 @@ export class TradeHistoryComponent {
     getTradeHistory(): void {
         this.tradeHistoryService.getTradeHistory()
             .subscribe(data => {
-                this.tradeHistory = data;
+                //console.log(data);
+                if (data.length > 0) {
+                    this.tradeHistory = data;
 
-                this.tradeHistory = this.tradeHistory.sort((a, b) => {
-                    // descending on date 
-                    return new Date(a.date) > new Date(b.date) ? -1 : 1;
-                });
+                    this.tradeHistory = this.tradeHistory.sort((a, b) => {
+                        // descending on date 
+                        return new Date(a.date) > new Date(b.date) ? -1 : 1;
+                    });
+                }
             },
             err => {
                 this.errorMessage = <any>err;

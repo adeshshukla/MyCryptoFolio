@@ -44,10 +44,9 @@ export class RealizedPortfolioComponent {
 
         that.tradeHistoryService.getTradeHistory()
             .subscribe(data => {
-                if (data.length <= 0) {
-                    alert("Please enter some data in trade history page...!!!");
-                } else {
+                if (data.length > 0) {
                     // Sort trade history on date ascending.
+                    console.log(data)
                     that.tradeHistory = data.sort((a, b) => {
                         return new Date(a.date) < new Date(b.date) ? -1 : 1;
                     });
@@ -57,6 +56,9 @@ export class RealizedPortfolioComponent {
                     that.realizedPortfolio.sort((a, b) => {
                         return new Date(a.sellDate) > new Date(b.sellDate) ? -1 : 1;
                     });
+
+                } else {
+                    alert("Please enter some data in trade history page...!!!");
                 }
             },
             err => that.errorMsg = <any>err);

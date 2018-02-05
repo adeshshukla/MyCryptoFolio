@@ -35,10 +35,7 @@ export class PortfolioService {
 
         that.tradeHistoryService.getTradeHistory()
             .subscribe(data => {
-                if (data.length <= 0) {
-
-                    // return that.consolidatedPortfolio;
-                } else {
+                if (data.length > 0) {
                     // Sorting on date ascending.
                     that.tradeHistory = data.sort((a, b) => {
                         return new Date(a.date) < new Date(b.date) ? -1 : 1;
@@ -56,6 +53,8 @@ export class PortfolioService {
 
                     // Refresh data from Binance.
                     that.refresh();
+                } else {
+                    // return that.consolidatedPortfolio;
                 }
             },
             err => that.errorMsg = <any>err);
