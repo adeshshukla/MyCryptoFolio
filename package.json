@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"ng serve\" \"node nodeServer.js\"",
+    "start": "concurrently \"ng serve\" \"node node_server/nodeServer.js\"",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
