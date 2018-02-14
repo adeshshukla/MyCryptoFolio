@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const FlatFile = require('./services/flatFileService.ts');
 const Binance = require('./services/binanceService.ts');
+const Firebase = require('./services/firebaseService.ts');
 
 // Router
 const app = express();
@@ -11,6 +12,11 @@ const router = express.Router();
 
 const dbService = new FlatFile();
 const binanceService = new Binance();
+const fireBaseService = new Firebase();
+
+router.get('/api/trade/getUsers', function (req, res) {
+	return fireBaseService.getUsers(req, res);
+});
 
 router.get('/api/trade/getTradeHistory', function (req, res) {
 	return dbService.getTradeHistory(req, res);
@@ -34,3 +40,4 @@ router.get('/api/binance/getCurrentPriceAllSymbols', function (req, res) {
 });
 
 module.exports = router;
+
