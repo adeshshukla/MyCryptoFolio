@@ -14,25 +14,29 @@ const dbService = new FlatFile();
 const binanceService = new Binance();
 const fireBaseService = new Firebase();
 
+// http://localhost:8080/api/trade/getUsers
 router.get('/api/trade/getUsers', function (req, res) {
 	return fireBaseService.getUsers(req, res);
 });
 
+// http://localhost:8080/api/trade/getTradeHistory
 router.get('/api/trade/getTradeHistory', function (req, res) {
-	return dbService.getTradeHistory(req, res);
+	// return dbService.getTradeHistory(req, res);
+	return fireBaseService.getTradeHistory(req, res);
 });
 
 router.post('/api/trade/saveTradeHistory', function (req, res) {
-	console.log('inside router---');
 	return dbService.saveTradeHistory(req, res);
 });
 
-router.post('/api/portfolio/savePortfolio', function (req, res) {
-	return dbService.savePortFolio(req, res);
+router.post('/api/portfolio/savePortFolioSnapshot', function (req, res) {
+	return dbService.savePortFolioSnapshot(req, res);
 });
 
-router.get('/api/portfolio/getPortfolio', function (req, res) {
-	return dbService.getPortfolio(req, res);
+// http://localhost:8080/api/portfolio/getPortFolioSnapshot
+router.get('/api/portfolio/getPortFolioSnapshot', function (req, res) {
+	// return dbService.getPortFolioSnapshot(req, res);
+	return fireBaseService.getPortfolio(req, res);
 });
 
 router.get('/api/binance/getCurrentPriceAllSymbols', function (req, res) {

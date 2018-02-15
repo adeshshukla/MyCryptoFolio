@@ -26,10 +26,15 @@ export class DashboardComponent {
 
     private loadPortfolioPerformanceData(): void {
         var that = this;
-        that.portfolioService.getPortfolioFromDb()
+        that.portfolioService.getPortFolioSnapshot()
             .subscribe(data => {
                 // console.log('Performance Data read from DB');
-                // console.log(data);
+                //console.log(data);              
+
+                data = data.sort((a, b) => {
+                    return new Date(a.timestamp) < new Date(b.timestamp) ? -1 : 1;
+                });
+
                 if (data.length > 0) {
                     that.configureChart(data);
                     that.configurePieChart(data);
@@ -69,7 +74,7 @@ export class DashboardComponent {
                 title: {
                     text: 'Date'
                 },
-                tickInterval: 24 * 3600 * 1000, // 1 hour ; 24 hr = 24*3600*1000(miliseconds)
+                tickInterval: 2 * 24 * 3600 * 1000, // 1 hour ; 24 hr = 24*3600*1000(miliseconds)
                 minTickInterval: 60 * 1000
             },
             yAxis: {
@@ -91,7 +96,7 @@ export class DashboardComponent {
         });
 
         // sort in descending.
-        pieData = pieData.sort( (a,b)=> {
+        pieData = pieData.sort((a, b) => {
             return b.y - a.y;
         });
         // pieData[0]["sliced"] = true;

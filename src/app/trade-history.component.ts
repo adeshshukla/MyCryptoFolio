@@ -20,10 +20,13 @@ export class TradeHistoryComponent {
     private coinId;
     private qty;
     private price;
+    private tradeAmt;
     private date;
     private exchange;
     private tradeType;
     private excelselectedExchange;
+    private fee;
+    private feeCoin;
 
     private tradeHistory = [];
     private importData: AOA = [[1, 2], [3, 4]];
@@ -58,13 +61,16 @@ export class TradeHistoryComponent {
 
     // Call from UI Add trade button.
     addTrade(): void {
-        var trade = {
+        var trade: Trade = {
             pairId: this.coinId + "BTC",
             coinId: this.coinId,
             tradeType: this.tradeType,
             qty: this.qty,
             price: this.price,
+            tradeAmt: this.tradeAmt || (this.qty * this.price),
             date: this.date,
+            fee: this.fee || 0,
+            feeCoin: this.feeCoin || '',
             exchange: this.selectedExchange
         };
         this.tradeHistory.push(trade);

@@ -30,7 +30,7 @@ export class MyPortfolioComponent {
 
     ngOnInit() {
         var that = this;
-        that.portfolioService.getPortfolioFromDb()
+        that.portfolioService.getPortFolioSnapshot()
             .subscribe(data => {
                 if(data.length > 0){
                     that.performanceData = data;
@@ -79,13 +79,13 @@ export class MyPortfolioComponent {
 
         that.performanceData.push(consPort);
 
-        this.portfolioService.savePortfolio(that.performanceData)
+        this.portfolioService.savePortFolioSnapshot(that.performanceData)
             .subscribe(data => {
                 if (!(data["statusCode"] === "OK")) {
                     console.log("Error returned from service...!!!");
                     console.log(data);
                 } else {
-                    console.log("Portfolio snap shot saved successfully...!!!");
+                    // console.log("Portfolio snap shot saved successfully...!!!");
                 }
             },
             err => this.errorMsg = <any>err);

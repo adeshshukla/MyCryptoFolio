@@ -45,8 +45,7 @@ export class RealizedPortfolioComponent {
         that.tradeHistoryService.getTradeHistory()
             .subscribe(data => {
                 if (data.length > 0) {
-                    // Sort trade history on date ascending.
-                    console.log(data)
+                    // Sort trade history on date ascending.                    
                     that.tradeHistory = data.sort((a, b) => {
                         return new Date(a.date) < new Date(b.date) ? -1 : 1;
                     });

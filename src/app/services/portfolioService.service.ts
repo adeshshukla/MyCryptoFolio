@@ -12,6 +12,7 @@ import { BinanceService } from "./binanceService.service";
 
 import { Trade } from "../bObjects/trade";
 import { Portfolio } from "../bObjects/portfolio";
+import { PortFolioSnapshot } from "../bObjects/portfolioSnapshot";
 
 @Injectable()
 export class PortfolioService {
@@ -146,15 +147,15 @@ export class PortfolioService {
         });
     }
 
-    public savePortfolio(consolidatedPortfolio: any): Observable<any> {
-        var url = this.portfolioApiUrl + '/savePortfolio';
+    public savePortFolioSnapshot(consolidatedPortfolio: any): Observable<any> {
+        var url = this.portfolioApiUrl + '/savePortFolioSnapshot';
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(url, consolidatedPortfolio, options).map(this.extractData).catch(this.handleError);
     }
 
-    getPortfolioFromDb(): Observable<Trade[]> {
-        var url = this.portfolioApiUrl + '/getPortfolio';
+    getPortFolioSnapshot(): Observable<PortFolioSnapshot[]> {
+        var url = this.portfolioApiUrl + '/getPortFolioSnapshot';
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 

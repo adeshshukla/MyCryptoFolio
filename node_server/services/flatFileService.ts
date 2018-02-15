@@ -20,7 +20,6 @@ class FlatFileService {
     }
 
     saveTradeHistory(req, res) {
-        console.log('inside saveTradeHistory() ---');
         const data = JSON.stringify(req.body);
         _fs.writeFile('./db/tradeHistory.txt', data, function (err) {
             if (err) {
@@ -30,7 +29,7 @@ class FlatFileService {
         });
     }
 
-    getPortfolio(req, res) {
+    getPortFolioSnapshot(req, res) {
         _fs.readFile('./db/portfolioPerformance.txt', 'utf8', function (err, contents) {
             if (err) {
                 console.log(err);
@@ -48,13 +47,13 @@ class FlatFileService {
         });
     }
 
-    savePortFolio(req, res) {
+    savePortFolioSnapshot(req, res) {
         const data = JSON.stringify(req.body);
         _fs.writeFile('./db/portfolioPerformance.txt', data, function (err) {
             if (err) {
                 return console.error(err);
             }
-            res.send({ 'statusCode': 'OK' });            
+            res.send({ 'statusCode': 'OK' });
         });
 
         // fs.open('./db/portfolioPerformance.txt', 'a', (err, fd) => {
