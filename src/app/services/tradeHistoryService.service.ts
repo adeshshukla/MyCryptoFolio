@@ -22,9 +22,11 @@ export class TradeHistoryService {
 
   saveTradeHistory(tradeHistory: Trade[]): Observable<Trade[]> {
     var url = this.tradeApiUrl + '/saveTradeHistory';
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    return this.http.post(url, tradeHistory, options).map(this.extractData).catch(this.handleError);
+    // let headers = new Headers({ 'Content-Type': 'application/json' });
+    // let options = new RequestOptions({ headers: headers });
+    // return this.http.post(url, tradeHistory, options).map(this.extractData).catch(this.handleError);
+
+    return this.http.post(url, tradeHistory).map(this.extractData).catch(this.handleError);
   }
 
   private extractData(res: Response) {

@@ -34,7 +34,10 @@ export class HttpService extends Http {
     }
 
     getRequestOptionArgs(options?: RequestOptionsArgs): RequestOptionsArgs {
-        return options;
+        // return options;
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        options = new RequestOptions({ headers: headers });
+        return options;        
     }
 
     intercept(observable: Observable<Response>): Observable<Response> {

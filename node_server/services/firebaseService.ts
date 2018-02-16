@@ -35,6 +35,7 @@ class FireBaseService {
     }
 
     getTradeHistory(req, res) {
+        console.log('dbservice -> Firebase.getTradeHistory()')
         var data = [];
         db.collection(Collections.TradeHistory).get()
             .then(snapshot => {
@@ -51,6 +52,7 @@ class FireBaseService {
     }
 
     getPortFolioSnapshot(req, res) {
+        console.log('dbservice -> Firebase.getPortFolioSnapshot()')
         var data = [];
         db.collection(Collections.PortfolioSnapshot).get()
             .then(snapshot => {
@@ -68,7 +70,7 @@ class FireBaseService {
 
     savePortFolioSnapshot(req, res) {
         const data = req.body;
-        // console.log('Adding Data in collection ------------ ')
+        // console.log('Adding PortFolio Snapshot in collection ------------ ')
         // console.log(req.body)
 
         if (data) {
@@ -85,6 +87,31 @@ class FireBaseService {
         } else {
             res.send({ 'statusCode': 'KO', 'msg': 'No data' });
         }
+    }
+
+    saveTrade(req, res) {
+        const data = req.body;
+        // console.log('Adding Trade in collection ------------ ')
+        // console.log(req.body)
+
+        if (data) {
+            var collRef = db.collection(Collections.TradeHistory);
+            var addDoc = collRef.add(data)
+                .then(ref => {
+                    console.log('Trade added with ID: ', ref.id);
+                    res.send({ 'statusCode': 'OK' });
+                })
+                .catch(err => {
+                    console.log('Error adding Trade...!!!');
+                    res.send(err);
+                });
+        } else {
+            res.send({ 'statusCode': 'KO', 'msg': 'No data to save...!!!' });
+        }
+    }
+
+    saveTradeHistory(req, res){
+        res.send({ 'statusCode': 'KO', 'msg': 'Function Not Implemented...!!!' });
     }
 }
 

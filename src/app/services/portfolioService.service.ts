@@ -149,15 +149,19 @@ export class PortfolioService {
 
     public savePortFolioSnapshotFile(consolidatedPortfolio: any): Observable<any> {
         var url = this.portfolioApiUrl + '/savePortFolioSnapshot';
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(url, consolidatedPortfolio, options).map(this.extractData).catch(this.handleError);
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        // return this.http.post(url, consolidatedPortfolio, options).map(this.extractData).catch(this.handleError);
+
+        return this.http.post(url, consolidatedPortfolio).map(this.extractData).catch(this.handleError);
     }
 
     public savePortFolioSnapshot(portSnapshot: any): Observable<any> {
         var url = this.portfolioApiUrl + '/savePortFolioSnapshot';
-        let options = this.createRequestOptions();
-        return this.http.post(url, portSnapshot, options).map(this.extractData).catch(this.handleError);
+        // let options = this.createRequestOptions();
+        //return this.http.post(url, portSnapshot, options).map(this.extractData).catch(this.handleError);
+
+        return this.http.post(url, portSnapshot).map(this.extractData).catch(this.handleError);
     }
 
     getPortFolioSnapshot(): Observable<PortFolioSnapshot[]> {
@@ -185,9 +189,9 @@ export class PortfolioService {
         return Observable.throw(errMsg);
     }
 
-    private createRequestOptions(): RequestOptions {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return options
-    }
+    // private createRequestOptions(): RequestOptions {
+    //     let headers = new Headers({ 'Content-Type': 'application/json' });
+    //     let options = new RequestOptions({ headers: headers });
+    //     return options
+    // }
 }

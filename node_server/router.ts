@@ -10,34 +10,49 @@ const Firebase = require('./services/firebaseService.ts');
 const app = express();
 const router = express.Router();
 
-const dbService = new FlatFile();
+const DBProvider = {
+	File: 'file',
+	Firebase: 'firebase'
+}
+
+// set env.
+var dbProvider = DBProvider.File;
+
+var dbService = (dbProvider === DBProvider.File) ? new FlatFile() : new Firebase();
+
 const binanceService = new Binance();
-const fireBaseService = new Firebase();
+
+// const dbService = new FlatFile();
+// const fireBaseService = new Firebase();
 
 // http://localhost:8080/api/trade/getUsers
 router.get('/api/trade/getUsers', function (req, res) {
-	return fireBaseService.getUsers(req, res);
+	// return dbService.getUsers(req, res);
 });
 
 // http://localhost:8080/api/trade/getTradeHistory
 router.get('/api/trade/getTradeHistory', function (req, res) {
-	// return dbService.getTradeHistory(req, res);
-	return fireBaseService.getTradeHistory(req, res);
+	return dbService.getTradeHistory(req, res);
+	// return fireBaseService.getTradeHistory(req, res);
 });
 
 router.post('/api/trade/saveTradeHistory', function (req, res) {
 	return dbService.saveTradeHistory(req, res);
 });
 
+router.post('/api/trade/saveTrade', function (req, res) {
+	return dbService.saveTrade(req, res);
+});
+
 router.post('/api/portfolio/savePortFolioSnapshot', function (req, res) {
 	// return dbService.savePortFolioSnapshot(req, res);	
-	return fireBaseService.savePortFolioSnapshot(req, res);
+	return dbService.savePortFolioSnapshot(req, res);
 });
 
 // http://localhost:8080/api/portfolio/getPortFolioSnapshot
 router.get('/api/portfolio/getPortFolioSnapshot', function (req, res) {
 	// return dbService.getPortFolioSnapshot(req, res);
-	return fireBaseService.getPortFolioSnapshot(req, res);
+	return dbService.getPortFolioSnapshot(req, res);
 });
 
 router.get('/api/binance/getCurrentPriceAllSymbols', function (req, res) {
