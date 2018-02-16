@@ -14,12 +14,20 @@ const collections = [{
 const fireBaseMigrationService = new FireBaseMigration();
 
 // Migrate Data.
-// migrateData();
+// migrateAllData();
+
+// deleteData('portfolioSnapshot');
+
+// migrateData('portfolioSnapshot', 'portfolioPerformance.txt');
 
 // Verify Data.
 verifyMigratedData();
 
-function migrateData() {
+function migrateData(collName, fileName){
+    fireBaseMigrationService.migrateData(collName, fileName);
+}
+
+function migrateAllData() {
     // Add user    
     fireBaseMigrationService.addUser(serverConfig.user);
 
@@ -42,4 +50,8 @@ function deleteAllData() {
     collections.forEach(function (element) {
         fireBaseMigrationService.deleteData(element.name);
     });
+}
+
+function deleteData(name) {
+    fireBaseMigrationService.deleteData(name);
 }

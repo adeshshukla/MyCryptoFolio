@@ -37,6 +37,11 @@ class FireBaseMigrationService {
                     jsonObj = JSON.parse(contents);
                 }
 
+                console.log('Sorting data in ascending order ---- ', collectionPath);
+                jsonObj =  jsonObj.sort((a, b) => {
+                    return new Date(a.timestamp) < new Date(b.timestamp) ? -1 : 1;
+                });
+
                 console.log('Adding to the batch ---- ', collectionPath);
                 for (var i = 0; i < jsonObj.length; i++) {
                     jsonObj[i]["userId"] = serverConfig.user.userId;

@@ -5,7 +5,7 @@ import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 import { TradeHistoryService } from "./tradeHistoryService.service";
 import { BinanceService } from "./binanceService.service";
@@ -22,7 +22,7 @@ export class PortfolioService {
     private tradeHistory: Trade[];
     private portfolio: Portfolio[];
     private totalRow: Portfolio;
-    public consolidatedPortfolio: ReplaySubject<any> = new ReplaySubject(1);
+    public consolidatedPortfolio: Subject<any> = new Subject();
 
     constructor(private tradeHistoryService: TradeHistoryService, private binanceService: BinanceService, private http: Http) {
         this.portfolio = [];
@@ -147,11 +147,17 @@ export class PortfolioService {
         });
     }
 
-    public savePortFolioSnapshot(consolidatedPortfolio: any): Observable<any> {
+    public savePortFolioSnapshotFile(consolidatedPortfolio: any): Observable<any> {
         var url = this.portfolioApiUrl + '/savePortFolioSnapshot';
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(url, consolidatedPortfolio, options).map(this.extractData).catch(this.handleError);
+    }
+
+    public savePortFolioSnapshot(portSnapshot: any): Observable<any> {
+        var url = this.portfolioApiUrl + '/savePortFolioSnapshot';
+        let options = this.createRequestOptions();
+        return this.http.post(url, portSnapshot, options).map(this.extractData).catch(this.handleError);
     }
 
     getPortFolioSnapshot(): Observable<PortFolioSnapshot[]> {
@@ -177,5 +183,11 @@ export class PortfolioService {
         // console.error('------------------- Inside tradeHistoryService.handleError() ------------------------')
         // console.error(errMsg);
         return Observable.throw(errMsg);
+    }
+
+    private createRequestOptions(): RequestOptions {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return options
     }
 }

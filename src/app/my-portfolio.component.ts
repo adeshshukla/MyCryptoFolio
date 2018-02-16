@@ -32,14 +32,14 @@ export class MyPortfolioComponent {
         var that = this;
         that.portfolioService.getPortFolioSnapshot()
             .subscribe(data => {
-                if(data.length > 0){
+                if (data.length > 0) {
                     that.performanceData = data;
-                }else{
+                } else {
                     that.performanceData = [];
-                }                   
+                }
                 // console.log('performabece data in constructor')
                 // console.log(that.performanceData);
-                
+
                 this.portfolioService.consolidatedPortfolio.subscribe(data => {
                     that.portfolio = data["portfolio"];
                     that.totalRow = data["totalRow"];
@@ -55,7 +55,7 @@ export class MyPortfolioComponent {
 
     public refresh(): void {
         this.portfolioService.refresh();
-        this.savePortfolioPerformance();
+        // this.savePortfolioPerformance();
     }
 
     private savePortfolioPerformance(): void {
@@ -79,15 +79,29 @@ export class MyPortfolioComponent {
 
         that.performanceData.push(consPort);
 
-        this.portfolioService.savePortFolioSnapshot(that.performanceData)
+        this.portfolioService.savePortFolioSnapshot(consPort)
             .subscribe(data => {
                 if (!(data["statusCode"] === "OK")) {
                     console.log("Error returned from service...!!!");
                     console.log(data);
                 } else {
-                    // console.log("Portfolio snap shot saved successfully...!!!");
+                    console.log("Portfolio snap shot saved successfully...!!!");
                 }
             },
             err => this.errorMsg = <any>err);
+
+        // Save into txt file.
+        // this.portfolioService.savePortFolioSnapshotFile(that.performanceData)
+        //     .subscribe(data => {
+        //         if (!(data["statusCode"] === "OK")) {
+        //             console.log("Error returned from service...!!!");
+        //             console.log(data);
+        //         } else {
+        //             // console.log("Portfolio snap shot saved successfully...!!!");
+        //         }
+        //     },
+        //     err => this.errorMsg = <any>err);
+
+
     }
 }

@@ -50,7 +50,7 @@ class FireBaseService {
             });
     }
 
-    getPortfolio(req, res) {
+    getPortFolioSnapshot(req, res) {
         var data = [];
         db.collection(Collections.PortfolioSnapshot).get()
             .then(snapshot => {
@@ -61,9 +61,30 @@ class FireBaseService {
                 res.send(data);
             })
             .catch((err) => {
-                console.log('Error getting Portfolio', err);
+                console.log('Error getting Portfolio Snapshot', err);
                 res.send(err);
             });
+    }
+
+    savePortFolioSnapshot(req, res) {
+        const data = req.body;
+        // console.log('Adding Data in collection ------------ ')
+        // console.log(req.body)
+
+        if (data) {
+            var collRef = db.collection(Collections.PortfolioSnapshot);
+            var addDoc = collRef.add(data)
+                .then(ref => {
+                    console.log('Portfolio Snapshot added with ID: ', ref.id);
+                    res.send({ 'statusCode': 'OK' });
+                })
+                .catch(err => {
+                    console.log('Error adding Portfolio Snapshot...!!!');
+                    res.send(err);
+                });
+        } else {
+            res.send({ 'statusCode': 'KO', 'msg': 'No data' });
+        }
     }
 }
 

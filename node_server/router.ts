@@ -30,13 +30,14 @@ router.post('/api/trade/saveTradeHistory', function (req, res) {
 });
 
 router.post('/api/portfolio/savePortFolioSnapshot', function (req, res) {
-	return dbService.savePortFolioSnapshot(req, res);
+	// return dbService.savePortFolioSnapshot(req, res);	
+	return fireBaseService.savePortFolioSnapshot(req, res);
 });
 
 // http://localhost:8080/api/portfolio/getPortFolioSnapshot
 router.get('/api/portfolio/getPortFolioSnapshot', function (req, res) {
 	// return dbService.getPortFolioSnapshot(req, res);
-	return fireBaseService.getPortfolio(req, res);
+	return fireBaseService.getPortFolioSnapshot(req, res);
 });
 
 router.get('/api/binance/getCurrentPriceAllSymbols', function (req, res) {
