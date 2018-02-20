@@ -14,7 +14,14 @@ export class DashboardComponent {
     private chartOptions: Object;
     private pieOptions: Object;
 
+    private initialInvestment;
+    private currentInvestedValue;
+    private netProfit;
+
+
     constructor(private portfolioService: PortfolioService) {
+        // initial investment in binance.
+        this.initialInvestment = 0.11186299;
         this.options = {
             title: { text: 'simple chart' },
             series: [{
@@ -36,6 +43,9 @@ export class DashboardComponent {
                 });
 
                 if (data.length > 0) {
+                    this.currentInvestedValue = (data[data.length - 1].totalValue).toFixed(8);
+                    this.netProfit = ((this.currentInvestedValue - this.initialInvestment) * 100 / this.initialInvestment).toFixed(2);
+
                     that.configureChart(data);
                     that.configurePieChart(data);
                 }
@@ -108,7 +118,9 @@ export class DashboardComponent {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie'
+                type: 'pie',
+                height: '50%',
+                //width: '500%'
             },
             title: {
                 text: 'Coin Holdings'

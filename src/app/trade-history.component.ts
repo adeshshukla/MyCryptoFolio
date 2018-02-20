@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild, ElementRef } from "@angular/core";
 import * as XLSX from 'xlsx';
 
 import { Trade } from "./bObjects/trade";
@@ -13,6 +13,7 @@ type AOA = any[][];
 })
 
 export class TradeHistoryComponent {
+    @ViewChild('fileInput') fileInput: ElementRef;
 
     private pageTitle = 'Trade History';
     private errorMessage: any;
@@ -73,7 +74,8 @@ export class TradeHistoryComponent {
             feeCoin: this.feeCoin || '',
             exchange: this.selectedExchange
         };
-        this.tradeHistory.push(trade);
+        // this.tradeHistory.push(trade);
+        this.saveTrade(trade);
     }
 
     // Call from UI Delete button.
@@ -91,15 +93,30 @@ export class TradeHistoryComponent {
         this.tradeType = '';
     }
 
-    // Save data to file.
-    private saveData(newData: any): void {
-        this.tradeHistoryService.saveTradeHistory(newData)
+    // Save single Trade.
+    private saveTrade(newTrade: Trade): void {
+        this.tradeHistoryService.saveTrade(newTrade)
             .subscribe(data => {
                 if (!(data["statusCode"] === "OK")) {
                     console.log("Error returned from service...!!!");
                     console.log(data);
                 } else {
-                    alert("Data saved successfully...!!!");
+                    alert("Single trade saved successfully...!!!");
+                    this.getTradeHistory();
+                }
+            },
+            err => this.errorMessage = <any>err);
+    }
+
+    // Save Trade History.
+    private saveTradeHistory(tradeHistory: Trade[]): void {
+        this.tradeHistoryService.saveTradeHistory(tradeHistory)
+            .subscribe(data => {
+                if (!(data["statusCode"] === "OK")) {
+                    console.log("Error returned from service...!!!");
+                    console.log(data);
+                } else {
+                    alert("Trade history saved successfully...!!!");
                     this.getTradeHistory();
                 }
             },
@@ -107,8 +124,17 @@ export class TradeHistoryComponent {
     }
 
     // Submit button
-    submit(): void {
-        this.saveData(this.tradeHistory);
+    // submit(): void {
+    //     this.saveTradeHistory(this.tradeHistory);
+    // }
+
+    uploadFile() {
+        var selection = confirm('!!!.... This will delete old data and write new data ...!!! \n Do you want to continue ?');
+        if (selection) {
+            this.fileInput.nativeElement.click();
+        } else {
+            return false;
+        }
     }
 
     // On select of upload file.
@@ -149,7 +175,7 @@ export class TradeHistoryComponent {
             else if (this.excelselectedExchange === "POLO") {
                 tradeHistory = this.mapperService.poloNeixExcel_to_tradeList(excelData);
             }
-            this.saveData(tradeHistory);
+            this.saveTradeHistory(tradeHistory);
         };
         reader.readAsBinaryString(target.files[0]);
     }

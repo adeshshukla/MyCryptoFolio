@@ -95,3 +95,40 @@ td{
 div.seperator{ padding:0 20px!important;}
 div.seperator h3 { width:100%; text-align:center; border-bottom: 1px solid #eaac53; line-height:0.1em; margin:10px 0 20px;} 
 div.seperator h3 span { background:#f4f4f4;   padding:0 10px; }
+
+.textCenter{
+    text-align: center;
+}
+
+.textSize{
+    font-size: 1.5em;
+}
+
+.contentDiv{
+    height: 100% !important;
+}
+
+.dashboardRow{    
+    height:300px;
+}
+
+.dashboardRow > div{    
+     background: white;
+    border: 1px solid lightgrey;    
+}
+
+.dashboardRow > div > chart > div{
+    padding:5px;
+}
+
+
+
+.pieChart{
+    float: right;
+    margin-right: 20px;
+}
+
+.pieChart>chart>div{
+    width:100% !important;
+    /*margin-left: 20px;    */
+}

@@ -110,8 +110,34 @@ class FireBaseService {
         }
     }
 
-    saveTradeHistory(req, res){
+    saveTradeHistory(req, res) {
         res.send({ 'statusCode': 'KO', 'msg': 'Function Not Implemented...!!!' });
+
+        var tradeHistory = req.body;
+
+        var batch = db.batch();
+        var collRef = db.collection(Collections.TradeHistory);
+
+        console.log('Sorting data in ascending order ---- ', Collections.TradeHistory);
+        tradeHistory = tradeHistory.sort((a, b) => {
+            return new Date(a.timestamp) < new Date(b.timestamp) ? -1 : 1;
+        });
+
+        console.log('Adding to the batch ---- ', Collections.TradeHistory);
+        for (var i = 0; i < tradeHistory.length; i++) {
+            tradeHistory[i]["userId"] = serverConfig.user.userId;
+
+            let docRef = collRef.doc();
+            batch.set(docRef, tradeHistory[i]);
+        }
+
+        console.log('Batch committing ----- ', Collections.TradeHistory);
+        return batch.commit().then(function () {
+            console.log('Batch commit Successfull.');
+        }, function (err) {
+            console.log('Batch commit Error ...!!!');
+            console.log(err);
+        });
     }
 }
 

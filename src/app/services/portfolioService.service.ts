@@ -9,6 +9,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 
 import { TradeHistoryService } from "./tradeHistoryService.service";
 import { BinanceService } from "./binanceService.service";
+import { AdminService } from "./adminService.service";
 
 import { Trade } from "../bObjects/trade";
 import { Portfolio } from "../bObjects/portfolio";
@@ -24,7 +25,8 @@ export class PortfolioService {
     private totalRow: Portfolio;
     public consolidatedPortfolio: Subject<any> = new Subject();
 
-    constructor(private tradeHistoryService: TradeHistoryService, private binanceService: BinanceService, private http: Http) {
+    constructor(private tradeHistoryService: TradeHistoryService, private binanceService: BinanceService
+        , private http: Http, private adminService: AdminService) {
         this.portfolio = [];
         // this.loadPortfolio();
     }
@@ -46,7 +48,8 @@ export class PortfolioService {
                     that.createPortfolio();
 
                     // Show only qty > 1 because of some coins qty that can't be redeemed.
-                    that.portfolio = that.portfolio.filter(x => (x.qty > 1) || (x.qty < 1 && (x.coinId == "BTC" || x.coinId == "ETH" || x.coinId == "BNB")));
+                    // that.portfolio = that.portfolio.filter(x => (x.qty > 1) || (x.qty < 1 && (x.coinId == "BTC" || x.coinId == "ETH" || x.coinId == "BNB")));
+                    that.portfolio = that.portfolio.filter(x => (x.qty > 1) || (x.qty < 1 && (x.coinId == "ETH" || x.coinId == "BNB")));
 
                     that.portfolio.sort((a, b) => {
                         return a.coinId < b.coinId ? -1 : 1;
@@ -78,6 +81,19 @@ export class PortfolioService {
             }
             else {
                 // Temp portfolio
+                var btcObject: Portfolio = new Portfolio();
+                btcObject.pairId = 'BTCBTC';
+                btcObject.coinId = 'BTC';
+                btcObject.buyPrice = this.adminService.balanceBTC;
+                btcObject.qty = 1;
+                btcObject.buyBtcValue = btcObject.qty * btcObject.buyPrice;
+                btcObject.currentPrice = btcObject.buyPrice;
+                btcObject.currentBtcValue = btcObject.buyBtcValue;
+                btcObject.profit = 0
+                btcObject.profitPerc = 0;
+
+                that.portfolio.push(btcObject);
+
                 that.portfolio.forEach(function (item) {
                     var coin = data.filter(x => x.symbol == item.pairId);
                     if (coin && coin.length > 0) {

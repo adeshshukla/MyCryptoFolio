@@ -2,11 +2,30 @@
   <h1 class="page-header">{{pageTitle}}</h1>
 </div>
 
-<div class="col-md-12 form-group">
-  <div class="col-md-6">
-    <chart [options]="chartOptions"></chart>
-  </div>
-  <div class="col-md-6">
+<div class="col-md-12 form-group dashboardRow">
+  <div class="col-md-6 pieChart">
     <chart [options]="pieOptions"></chart>
+  </div>
+
+  <div class="col-md-5 contentDiv">
+    <div class="col-md-12">
+      <h2 class="textCenter">
+        <u>Net Portfolio</u>
+      </h2>
+    </div>
+
+    <div class="col-md-12 textSize">Initial investment : <span>{{initialInvestment}} BTC</span></div>
+    <div class="col-md-12 textSize">Current Value : <span [className]="netProfit < 0? 'lossText':'profitText'">{{currentInvestedValue}} BTC</span></div>
+    <div class="col-md-12 textSize">Net Profit : <span [className]="netProfit < 0? 'lossText':'profitText'">{{netProfit}} %</span></div>
+  </div>
+
+
+
+
+</div>
+
+<div class="col-md-12 form-group dashboardRow">
+  <div class="col-md-11">
+    <chart [options]="chartOptions"></chart>
   </div>
 </div>

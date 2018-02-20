@@ -20,6 +20,11 @@ export class TradeHistoryService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
+  saveTrade(trade: Trade): Observable<Trade> {
+    var url = this.tradeApiUrl + '/saveTrade';
+    return this.http.post(url, trade).map(this.extractData).catch(this.handleError);
+  }
+
   saveTradeHistory(tradeHistory: Trade[]): Observable<Trade[]> {
     var url = this.tradeApiUrl + '/saveTradeHistory';
     // let headers = new Headers({ 'Content-Type': 'application/json' });

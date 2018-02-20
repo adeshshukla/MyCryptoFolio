@@ -26,12 +26,12 @@ const binanceService = new Binance();
 // const fireBaseService = new Firebase();
 
 // http://localhost:8080/api/trade/getUsers
-router.get('/api/trade/getUsers', function (req, res) {
+router.get('/api/trade/getUsers', function (req, res) { // done
 	// return dbService.getUsers(req, res);
 });
 
 // http://localhost:8080/api/trade/getTradeHistory
-router.get('/api/trade/getTradeHistory', function (req, res) {
+router.get('/api/trade/getTradeHistory', function (req, res) { // done
 	return dbService.getTradeHistory(req, res);
 	// return fireBaseService.getTradeHistory(req, res);
 });
@@ -44,18 +44,18 @@ router.post('/api/trade/saveTrade', function (req, res) {
 	return dbService.saveTrade(req, res);
 });
 
-router.post('/api/portfolio/savePortFolioSnapshot', function (req, res) {
+router.post('/api/portfolio/savePortFolioSnapshot', function (req, res) { // done
 	// return dbService.savePortFolioSnapshot(req, res);	
 	return dbService.savePortFolioSnapshot(req, res);
 });
 
 // http://localhost:8080/api/portfolio/getPortFolioSnapshot
-router.get('/api/portfolio/getPortFolioSnapshot', function (req, res) {
+router.get('/api/portfolio/getPortFolioSnapshot', function (req, res) { // done
 	// return dbService.getPortFolioSnapshot(req, res);
 	return dbService.getPortFolioSnapshot(req, res);
 });
 
-router.get('/api/binance/getCurrentPriceAllSymbols', function (req, res) {
+router.get('/api/binance/getCurrentPriceAllSymbols', function (req, res) { // done
 	return binanceService.getPriceAllSymbols(req, res);
 });
 

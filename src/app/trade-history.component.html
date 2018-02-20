@@ -18,7 +18,7 @@
         <label class="control-label col-sm-offset-1 col-sm-2" for="txtPrice">Import Excel</label>
         <div class="col-sm-3">
           <input #fileInput type="file" class="upload-input" (change)="onFileChange($event)" multiple="false">
-          <button class="btn btn-lg upload-btn" type="button" [disabled]="!excelselectedExchange" (click)="fileInput.click()">Upload File</button>
+          <button class="btn btn-lg upload-btn" type="button" [disabled]="!excelselectedExchange" (click)="uploadFile()">Upload File</button>
         </div>
       </div>
     </div>
@@ -135,13 +135,13 @@
       </tr>
     </table>
 
-    <div class="row form-group" style="padding-right:40px;">
+    <!--<div class="row form-group" style="padding-right:40px;">
       <div class="col-sm-offset-10 col-sm-2" style="width:12%; float:right;">
         <button type="button" class="btn btn-success btn-block" (click)="submit()">
                 <span class="glyphicon glyphicon-floppy-save"></span> Submit
               </button>
       </div>
-    </div>
+    </div>-->
   </div>
 
 </form>

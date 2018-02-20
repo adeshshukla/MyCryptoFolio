@@ -9,6 +9,7 @@ import { PortfolioService } from "./services/portfolioService.service";
 import { TradeHistoryService } from "./services/tradeHistoryService.service";
 import { BinanceService } from "./services/binanceService.service";
 import { MapperService } from "./services/mapperService.service";
+import { AdminService } from "./services/adminService.service";
 import { HttpService } from './common/httpService.service';
 import { LoaderService } from "./common/loader/loader.service";
 import { LoaderComponent } from "./common/loader/loader.component";
@@ -43,7 +44,7 @@ import { RealizedPortfolioComponent } from "./realized-portfolio.component";
       },
       deps: [XHRBackend, RequestOptions, LoaderService]
     },
-    TradeHistoryService, BinanceService, MapperService, PortfolioService
+    TradeHistoryService, BinanceService, MapperService, PortfolioService, AdminService
   ],
   bootstrap: [AppComponent]
 })

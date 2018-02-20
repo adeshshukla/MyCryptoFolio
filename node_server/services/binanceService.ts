@@ -25,6 +25,7 @@ class BinanceService {
 
         }).on('error', err => {
             console.log('---- Network connection issue --------');
+            console.log(err)
             res.send({ 'statusCode': 'NET_ERR' });
         });
     }
