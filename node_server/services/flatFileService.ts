@@ -1,4 +1,7 @@
 const _fs = require('fs');
+const _serverConfig = require('../config/serverConfig.ts');
+
+var userId = _serverConfig.user.userId;
 
 class FlatFileService {
 
@@ -21,8 +24,15 @@ class FlatFileService {
     }
 
     saveTradeHistory(req, res) {
-        const tradeHistory = JSON.stringify(req.body);
-        _fs.writeFile('./db/tradeHistory.txt', tradeHistory, function (err) {
+        const tradeHistory = req.body;
+
+        for (var i = 0; i < tradeHistory.length; i++) {
+            tradeHistory[i]["userId"] = userId;
+        }
+        const strTradeHistory = JSON.stringify(req.body);
+
+
+        _fs.writeFile('./db/tradeHistory.txt', strTradeHistory, function (err) {
             if (err) {
                 return console.error(err);
             }
@@ -32,6 +42,8 @@ class FlatFileService {
 
     saveTrade(req, res) {
         const trade = req.body;
+        trade["userId"] = userId;
+
         _fs.readFile('./db/tradeHistory.txt', 'utf8', function (err, contents) {
             if (err) {
                 console.log(err);
@@ -55,8 +67,6 @@ class FlatFileService {
 
             }
         });
-
-
     }
 
     getPortFolioSnapshot(req, res) {
@@ -78,24 +88,32 @@ class FlatFileService {
     }
 
     savePortFolioSnapshot(req, res) {
-        const data = JSON.stringify(req.body);
-        _fs.writeFile('./db/portfolioPerformance.txt', data, function (err) {
-            if (err) {
-                return console.error(err);
-            }
-            res.send({ 'statusCode': 'OK' });
-        });
+        const portfolioSnap = req.body;
+        portfolioSnap["userId"] = userId;
 
-        // fs.open('./db/portfolioPerformance.txt', 'a', (err, fd) => {
-        // 	if (err) throw err;
-        // 	fs.appendFile(fd, data, (err) => {
-        // 		fs.close(fd, (err) => {
-        // 			if (err) throw err;
-        // 		});
-        // 		if (err) throw err;
-        // 		res.send({ "statusCode": "OK" });
-        // 	});
-        // });
+        _fs.readFile('./db/portfolioPerformance.txt', 'utf8', function (err, contents) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            } else {
+                let snapHistory = [];
+                if (contents) {
+                    snapHistory = JSON.parse(contents);
+                }
+
+                // Add trade to existing trade history.
+                snapHistory.push(portfolioSnap);
+                var strData = JSON.stringify(snapHistory);
+
+                _fs.writeFile('./db/portfolioPerformance.txt', strData, function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.send({ 'statusCode': 'OK' });
+                });
+
+            }
+        });
     }
 }
 

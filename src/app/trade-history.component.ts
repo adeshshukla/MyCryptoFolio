@@ -129,12 +129,13 @@ export class TradeHistoryComponent {
     // }
 
     uploadFile() {
-        var selection = confirm('!!!.... This will delete old data and write new data ...!!! \n Do you want to continue ?');
-        if (selection) {
-            this.fileInput.nativeElement.click();
-        } else {
-            return false;
-        }
+        alert('!!!   Currently the functionality not available   !!!');
+        // var selection = confirm('!!!.... This will delete old data and write new data ...!!! \n Do you want to continue ?');
+        // if (selection) {
+        //     this.fileInput.nativeElement.click();
+        // } else {
+        //     return false;
+        // }
     }
 
     // On select of upload file.

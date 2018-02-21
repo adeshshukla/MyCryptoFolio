@@ -28,7 +28,6 @@ export class PortfolioService {
     constructor(private tradeHistoryService: TradeHistoryService, private binanceService: BinanceService
         , private http: Http, private adminService: AdminService) {
         this.portfolio = [];
-        // this.loadPortfolio();
     }
 
     public getPortfolio() {
@@ -55,6 +54,20 @@ export class PortfolioService {
                         return a.coinId < b.coinId ? -1 : 1;
                     });
 
+                    // insert BTC balance.
+                    var btcObject: Portfolio = new Portfolio();
+                    btcObject.pairId = 'BTCBTC';
+                    btcObject.coinId = 'BTC';
+                    btcObject.buyPrice = this.adminService.balanceBTC;
+                    btcObject.qty = 1;
+                    btcObject.buyBtcValue = btcObject.qty * btcObject.buyPrice;
+                    btcObject.currentPrice = btcObject.buyPrice;
+                    btcObject.currentBtcValue = btcObject.buyBtcValue;
+                    btcObject.profit = 0
+                    btcObject.profitPerc = 0;
+
+                    that.portfolio.push(btcObject);
+
                     // Refresh data from Binance.
                     that.refresh();
                 } else {
@@ -80,20 +93,7 @@ export class PortfolioService {
                 alert("Cannot connect to exchange...!!!. Please check your internet connection.");
             }
             else {
-                // Temp portfolio
-                var btcObject: Portfolio = new Portfolio();
-                btcObject.pairId = 'BTCBTC';
-                btcObject.coinId = 'BTC';
-                btcObject.buyPrice = this.adminService.balanceBTC;
-                btcObject.qty = 1;
-                btcObject.buyBtcValue = btcObject.qty * btcObject.buyPrice;
-                btcObject.currentPrice = btcObject.buyPrice;
-                btcObject.currentBtcValue = btcObject.buyBtcValue;
-                btcObject.profit = 0
-                btcObject.profitPerc = 0;
-
-                that.portfolio.push(btcObject);
-
+                // Update portfolio current values.
                 that.portfolio.forEach(function (item) {
                     var coin = data.filter(x => x.symbol == item.pairId);
                     if (coin && coin.length > 0) {
@@ -114,10 +114,8 @@ export class PortfolioService {
                 var res = {};
                 res["portfolio"] = that.portfolio;
                 res["totalRow"] = that.totalRow;
-                // return that.consolidatedPortfolio;
 
                 that.consolidatedPortfolio.next(res);
-                // return that.consolidatedPortfolio;
             }
         }, err => {
             console.log("-----------------Error returned from binance Service-------------");
@@ -161,15 +159,6 @@ export class PortfolioService {
                 }
             }
         });
-    }
-
-    public savePortFolioSnapshotFile(consolidatedPortfolio: any): Observable<any> {
-        var url = this.portfolioApiUrl + '/savePortFolioSnapshot';
-        // let headers = new Headers({ 'Content-Type': 'application/json' });
-        // let options = new RequestOptions({ headers: headers });
-        // return this.http.post(url, consolidatedPortfolio, options).map(this.extractData).catch(this.handleError);
-
-        return this.http.post(url, consolidatedPortfolio).map(this.extractData).catch(this.handleError);
     }
 
     public savePortFolioSnapshot(portSnapshot: any): Observable<any> {

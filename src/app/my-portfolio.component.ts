@@ -77,21 +77,10 @@ export class MyPortfolioComponent {
             consPort["allCoins"].push(holding);
         });
 
-        that.performanceData.push(consPort);
-
-        // this.portfolioService.savePortFolioSnapshot(consPort)
-        //     .subscribe(data => {
-        //         if (!(data["statusCode"] === "OK")) {
-        //             console.log("Error returned from service...!!!");
-        //             console.log(data);
-        //         } else {
-        //             console.log("Portfolio snap shot saved successfully...!!!");
-        //         }
-        //     },
-        //     err => this.errorMsg = <any>err);
+        // that.performanceData.push(consPort);
 
         // Save into txt file.
-        this.portfolioService.savePortFolioSnapshotFile(that.performanceData)
+        this.portfolioService.savePortFolioSnapshot(consPort)
             .subscribe(data => {
                 if (!(data["statusCode"] === "OK")) {
                     console.log("Error returned from service...!!!");
@@ -101,7 +90,6 @@ export class MyPortfolioComponent {
                 }
             },
             err => this.errorMsg = <any>err);
-
 
     }
 }

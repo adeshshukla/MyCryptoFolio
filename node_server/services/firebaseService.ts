@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('../config/firebaseAcc.json');
+const serverConfig = require('../config/serverConfig.ts');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -16,7 +17,10 @@ var Collections = {
     PortfolioSnapshot: 'portfolioSnapshot'
 }
 
+var userId = serverConfig.user.userId;
+
 class FireBaseService {
+
     getUsers(req, res) {
         var data = [];
         db.collection(Collections.Users).get()
@@ -90,13 +94,15 @@ class FireBaseService {
     }
 
     saveTrade(req, res) {
-        const data = req.body;
+        const trade = req.body;
         // console.log('Adding Trade in collection ------------ ')
         // console.log(req.body)
 
-        if (data) {
+        if (trade) {
+            trade["userId"] = userId;
+
             var collRef = db.collection(Collections.TradeHistory);
-            var addDoc = collRef.add(data)
+            var addDoc = collRef.add(trade)
                 .then(ref => {
                     console.log('Trade added with ID: ', ref.id);
                     res.send({ 'statusCode': 'OK' });
@@ -111,21 +117,23 @@ class FireBaseService {
     }
 
     saveTradeHistory(req, res) {
+
+        // TO DO : delete data.
         res.send({ 'statusCode': 'KO', 'msg': 'Function Not Implemented...!!!' });
 
         var tradeHistory = req.body;
-
-        var batch = db.batch();
-        var collRef = db.collection(Collections.TradeHistory);
 
         console.log('Sorting data in ascending order ---- ', Collections.TradeHistory);
         tradeHistory = tradeHistory.sort((a, b) => {
             return new Date(a.timestamp) < new Date(b.timestamp) ? -1 : 1;
         });
 
+        var batch = db.batch();
+        var collRef = db.collection(Collections.TradeHistory);
+
         console.log('Adding to the batch ---- ', Collections.TradeHistory);
         for (var i = 0; i < tradeHistory.length; i++) {
-            tradeHistory[i]["userId"] = serverConfig.user.userId;
+            tradeHistory[i]["userId"] = userId;
 
             let docRef = collRef.doc();
             batch.set(docRef, tradeHistory[i]);
@@ -138,6 +146,18 @@ class FireBaseService {
             console.log('Batch commit Error ...!!!');
             console.log(err);
         });
+    }
+
+    deleteData(collectionPath) {
+        db.collection(collectionPath).get()
+            .then((snapshot) => {
+                snapshot.docs.forEach((doc) => {
+                    doc.ref.delete();
+                });
+            })
+            .catch((err) => {
+                console.log('Error getting documents', err);
+            });
     }
 }
 

@@ -16,7 +16,7 @@ const DBProvider = {
 }
 
 // set env.
-var dbProvider = DBProvider.File;
+var dbProvider = DBProvider.Firebase;
 
 var dbService = (dbProvider === DBProvider.File) ? new FlatFile() : new Firebase();
 
